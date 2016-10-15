@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<iframe style="display: none;" id="authorizeFrame" src="about:blank"></iframe>
+</body>
+<script type="application/javascript">
+  var authTimer = null;
+  var userLoggedIn;
+  var Singular = window.parent.Singular;
+
+  var postAuthLocation = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/postauth.html';
+  var authorizeUrl = Singular.properties.uaaLocation + '/oauth/authorize?response_type=id_token&client_id=' + Singular.properties.clientId + '&prompt=none&redirect_uri=' + encodeURIComponent(postAuthLocation);
+  var authorizeWindow = document.getElementById('authorizeFrame').contentWindow;
+  var uaaOrigin = getOrigin(Singular.properties.uaaLocation);
+
+  window.addEventListener('message', receiveMessage, false);
+
+  checkSession();
+  setInterval(checkSession, Singular.properties.checkInterval);
+
+  function afterAuthorize() {
+    clearTimeout(authTimer);
+    var fragment = authorizeWindow.location.hash;
+    var claims;
+
+    if (fragment && fragment.length > 0) claims = getClaims(fragment.substring(1));
+
+    announceIdentity(claims);
+    authTimer = null;
+  }
+
+  function announceIdentity(claims) {
+    if (claims) {
+      userLoggedIn = true;
+      storeIdentity(claims);
+      Singular.properties.onIdentityChange(claims);
+    } else {
+      if (userLoggedIn === false) {
+        return;
+      }
+      userLoggedIn = false;
+      clearStoredIdentity();
+      Singular.properties.onIdentityChange(null);
+    }
+  }
+
+  function checkSession() {
+    if (!authTimer) {
+      var sessionFrame = Singular.sessionFrame.contentWindow;
+      var sessionState = Singular.properties.clientId + ' ' + getUserId();
+      sessionFrame.postMessage(sessionState, uaaOrigin);
+    }
+  }
+
+  function receiveMessage(e) {
+    var status = e.data;
+    if (status === 'changed') {
+      clearStoredIdentity();
+      fetchNewToken();
+    } else if (status === 'unchanged') {
+      if (userLoggedIn === undefined) {
+        announceIdentity(getStoredIdentity());
+      }
+    } else /* error */ {
+      announceIdentity(null);
+    }
+  }
+
+  function fetchNewToken() {
+    authTimer = setTimeout(function () {
+      authorizeWindow.location = 'about:blank';
+      announceIdentity(null);
+      authTimer = null;
+    }, Singular.properties.authTimeout);
+    authorizeWindow.location = authorizeUrl;
+  }
+
+  function getIdToken(fragment) {
+    var params = fragment.split('&');
+    for (var i in params) {
+      if (params[i].startsWith('id_token=')) {
+        return params[i].substring(9);
+      }
+    }
+  }
+
+  function getClaims(fragment) {
+    var jwt = getIdToken(fragment);
+    if (!jwt) {
+      return null;
+    }
+    var base64Url = jwt.split('.')[1];
+    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+  }
+
+  function getOrigin(url) {
+    try {
+      return origin = /^(\S+?:\/\/[a-z0-9-.]+(:[0-9]+)?)/ig.exec(url)[0] + '/';
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function getUserId() {
+    var claims = getStoredIdentity();
+    if (claims) {
+      return claims.user_id;
+    }
+    return '~';
+  }
+
+  function getStoredIdentity() {
+    if (!localStorage) {
+      return null;
+    }
+    try {
+      return JSON.parse(localStorage.getItem(Singular.properties.storageKey));
+    } catch (err) {
+      clearStoredIdentity();
+      return null;
+    }
+  }
+
+  function clearStoredIdentity() {
+    if (localStorage) {
+      localStorage.removeItem(Singular.properties.storageKey);
+    }
+  }
+
+  function storeIdentity(claims) {
+    if (localStorage) {
+      localStorage.setItem(Singular.properties.storageKey, JSON.stringify(claims));
+    }
+  }
+</script>
+</html>
