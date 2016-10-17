@@ -4,24 +4,24 @@
   <title>Singular Example</title>
   <script type="application/javascript" src="singular/singular.js"></script>
   <script type="application/javascript">
+    var messageDiv;
     Singular.init({
       clientId: 'exampleClient',
-      uaaLocation: 'https://login.example.com',
       onIdentityChange: function (identity) {
-        var messageDiv = document.getElementById('message');
-        if (identity) {
-          console.log('User ' + identity.user_name + ' logged in');
-          messageDiv.innerHTML = identity.user_name;
-        }
-        else {
-          console.log('User logged out');
-          messageDiv.innerHTML = 'Click <a href="' + Singular.properties.uaaLocation + '" target="_blank">here</a> to log in';
-        }
+        console.log('User ' + identity.user_name + ' logged in');
+        messageDiv.innerHTML = identity.user_name;
+      },
+      onLogout: function () {
+        console.log('User logged out');
+        messageDiv.innerHTML = 'Click <a href="' + Singular.properties.uaaLocation + '" target="_blank">here</a> to log in';
       }
     });
   </script>
 </head>
 <body>
 <div id="message"></div>
+<script type="application/javascript">
+  messageDiv = document.getElementById('message');
+</script>
 </body>
 </html>

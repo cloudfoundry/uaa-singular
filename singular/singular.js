@@ -2,6 +2,7 @@ var Singular = {
   singularLocation: document.getElementsByTagName('script')[document.getElementsByTagName('script').length - 1].src,
   properties: {
     onIdentityChange: function () {},
+    onLogout: function () {},
     clientId: 'client',
     checkInterval: 1000,
     uaaLocation: 'http://localhost:8080/uaa',
@@ -32,10 +33,5 @@ var Singular = {
       document.body.appendChild(sessionFrame);
       document.body.appendChild(clientFrame);
     });
-  },
-
-  stop: function () {
-    document.body.removeChild(this.clientFrame);
-    document.body.removeChild(this.sessionFrame);
   }
 };

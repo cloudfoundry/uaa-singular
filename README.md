@@ -33,7 +33,10 @@ Then use the `Singular.init` method to configure and start the authentication. T
     clientId: 'exampleClient',
     uaaLocation: 'https://login.example.com',
     onIdentityChange: function (identity) {
-      // perform custom login/logout behavior
+      // perform custom login behavior
+    },
+    onLogout: function () {
+      // perform logout behavior
     }
   });
 </script>
@@ -43,6 +46,7 @@ Define all custom behavior for the application in `onIdentityChange`. The argume
 |      Property      |                                                                                                             Description                                                                                                            |             Default            |
 |-------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------|
 | `onIdentityChange` |                                                                a function of one argument which is used as a handler for any changes in the currently logged-in user                                                               |                                |
+|         `onLogout` |                                                                         a function that specifies the actions to take upon ending the user's session                                                                               |                                |
 |         `clientId` |                                                                                     the ID of an implicit-grant OAuth client on the UAA server                                                                                     | `"client"`                     |
 |    `checkInterval` |                                                                                     milliseconds between subsequent checks for session changes                                                                                     | `1000`                         |
 |      `uaaLocation` |                                                                       the location of the UAA server with _no_ ending slash, as a URI including the protocol                                                                       | `"http://localhost:8080/uaa"`  |
