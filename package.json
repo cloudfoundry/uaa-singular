@@ -1,0 +1,18 @@
+{
+  "name": "singular-test",
+  "version" : "1.0.0",
+  "dependencies": {
+    "http-server" : "",
+    "selenium-standalone-jar" : "^2.53.1",
+    "chromedriver" : "^2.24.1",
+    "nightwatch" : "^0.9.8"
+  },
+  "scripts" : {
+    "get-uaa" : "git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
+    "start-uaa" : "cd test/tmp/uaa && ./gradlew cargoStartLocal",
+    "stop-uaa" : "cd test/tmp/uaa && ./gradlew cargoStopLocal",
+    "start-singular-app" : "sh test/startHttpServer.sh",
+    "stop-singular-app" : "kill $(cat test/tmp/httpServer.pid.tmp) && rm test/tmp/httpServer.pid.tmp",
+    "test" : "cd test && ../node_modules/nightwatch/bin/nightwatch"
+  }
+}
