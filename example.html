@@ -6,6 +6,7 @@
   <script type="application/javascript">
     var messageDiv;
     Singular.init({
+      uaaLocation: "https://login.example.com",
       clientId: 'exampleClient',
       onIdentityChange: function (identity) {
         console.log('User ' + identity.user_name + ' logged in');
