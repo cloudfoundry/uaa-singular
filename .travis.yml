@@ -1,0 +1,8 @@
+language: javascript
+install:
+  - npm install
+  - npm run get-uaa
+  - npm run start-uaa
+  - npm run start-singular-app
+script:
+  - npm run test
