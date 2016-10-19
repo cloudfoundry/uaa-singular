@@ -7,7 +7,7 @@
     "log_path" : "tmp",
     "server_path" : "../node_modules/selenium-standalone-jar/bin/selenium-server-standalone-2.53.1.jar",
     "cli_args" : {
-      "webdriver.chrome.driver" : "../node_modules/chromedriver/bin/chromedriver"
+      "webdriver.gecko.driver" : "../node_modules/geckodriver/bin/geckodriver"
     }
   },
 
@@ -22,7 +22,8 @@
         "path" : "tmp/screenshots"
       },
       "desiredCapabilities": {
-        "browserName": "chrome"
+        "browserName": "firefox",
+        "javascriptEnabled" : true
       }
     }
   }
