@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Singular Test</title>
+  <script type="application/javascript" src="../../../singular/singular.js"></script>
+  <script type="application/javascript">
+    var info = {identitiesReceived: [], logouts: 0}
+    Singular.init({
+      uaaLocation: "http://localhost:8080/uaa",
+      clientId: 'cf',
+      onIdentityChange: function (identity) {
+        info.identitiesReceived.push(identity);
+      },
+      onLogout: function () {
+        info.logouts++;
+      }
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>
