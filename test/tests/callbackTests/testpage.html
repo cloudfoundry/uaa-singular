@@ -15,8 +15,12 @@
         info.logouts++;
       }
     });
+    function loginWindow(){
+      window.open("http://localhost:8080/uaa", "LOGIN_WINDOW");
+    }
   </script>
 </head>
 <body>
+<button id="loginWindow" onclick="loginWindow()"></button>
 </body>
 </html>

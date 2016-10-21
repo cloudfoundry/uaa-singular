@@ -5,7 +5,7 @@
   "selenium" : {
     "start_process" : true,
     "log_path" : "tmp",
-    "server_path" : "../node_modules/selenium-standalone-jar/bin/selenium-server-standalone-2.53.1.jar",
+    "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.0.0.jar",
     "cli_args" : {
       "webdriver.gecko.driver" : "../node_modules/geckodriver/bin/geckodriver"
     }
