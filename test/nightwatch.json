@@ -7,7 +7,7 @@
     "log_path" : "tmp",
     "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.0.0.jar",
     "cli_args" : {
-      "webdriver.gecko.driver" : "../node_modules/geckodriver/bin/geckodriver"
+      "webdriver.chrome.driver" : "../node_modules/geckodriver/bin/geckodriver"
     }
   },
 
