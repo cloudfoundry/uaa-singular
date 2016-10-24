@@ -1,4 +1,5 @@
 *.iml
 .idea
+*.pem
 node_modules
 !/.gitignore

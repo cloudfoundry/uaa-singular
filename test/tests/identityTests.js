@@ -1,5 +1,5 @@
 const loginUrl = 'http://localhost:8080/uaa/login';
-const testAppUrl = 'http://localhost:8000/test/tests/testpage.html';
+const testAppUrl = 'http://localhost:8000/test/tests/identityTestPage.html';
 const logoutUrl = 'http://localhost:8080/uaa/logout.do';
 module.exports = {
   'test logout callback is called on page load without login' : function (browser) {
