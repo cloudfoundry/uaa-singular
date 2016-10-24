@@ -1,5 +1,5 @@
 const loginUrl = 'http://localhost:8080/uaa/login';
-const testAppUrl = 'http://localhost:8000/test/tests/callbackTests/testpage.html';
+const testAppUrl = 'http://localhost:8000/test/tests/testpage.html';
 const logoutUrl = 'http://localhost:8080/uaa/logout.do';
 module.exports = {
   'test logout callback is called on page load without login' : function (browser) {
@@ -71,10 +71,10 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .pause(1200)
       .click('#loginWindow')
-      .waitForElementVisible('body', 1000)
       .switchWindow('LOGIN_WINDOW', function(result){
         console.log("Switch to login_window returned: ", result);
       })
+      .waitForElementVisible('input[name="username"]', 1000)
       .setValue('input[name="username"]', 'marissa')
       .setValue('input[name="password"]', 'koala')
       .submitForm('input[name="username"]')
