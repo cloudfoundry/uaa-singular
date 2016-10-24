@@ -4,7 +4,7 @@
   <title>Singular Test</title>
   <script type="application/javascript" src="../../singular/singular.js"></script>
   <script type="application/javascript">
-    var info = {identitiesReceived: [], logouts: 0, localStorage : localStorage.getItem(Singular.properties.storageKey)}
+    var info = {identitiesReceived: [], logouts: 0};
     Singular.init({
       uaaLocation: "http://localhost:8080/uaa",
       clientId: 'cf',
@@ -15,7 +15,7 @@
         info.logouts++;
       }
     });
-    function loginWindow(){
+    function loginWindow() {
       window.open("http://localhost:8080/uaa", "LOGIN_WINDOW");
     }
   </script>
