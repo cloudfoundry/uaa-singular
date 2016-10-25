@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Singular Test</title>
+  <script type="application/javascript" src="../../singular/singular.js"></script>
+  <script type="application/javascript">
+    var info = {};
+    Singular.init({
+      uaaLocation: "http://localhost:8080/uaa",
+      clientId: 'cf',
+      onIdentityChange: function (identity) {
+      },
+      onLogout: function () {
+      }
+    });
+    function loginWindow() {
+      window.open("http://localhost:8080/uaa", "LOGIN_WINDOW");
+    }
+  </script>
+</head>
+<body>
+<button id="loginWindow" onclick="loginWindow()"></button>
+</body>
+</html>

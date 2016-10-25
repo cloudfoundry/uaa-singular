@@ -11,6 +11,7 @@
   var Singular = window.parent.Singular;
 
   var postAuthLocation = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/postauth.html';
+  var postAccessLocation = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/postaccess.html';
   var authorizeUrl = Singular.properties.uaaLocation + '/oauth/authorize?response_type=id_token&client_id=' + Singular.properties.clientId + '&prompt=none&redirect_uri=' + encodeURIComponent(postAuthLocation);
   var authorizeWindow = document.getElementById('authorizeFrame').contentWindow;
   var uaaOrigin = getOrigin(Singular.properties.uaaLocation);
@@ -25,7 +26,7 @@
     var fragment = authorizeWindow.location.hash;
     var claims;
 
-    if (fragment && fragment.length > 0) claims = getClaims(fragment.substring(1));
+    if (fragment && fragment.length > 0) claims = getClaims(fragment.substring(1), 'id_token');
 
     announceIdentity(claims);
     authTimer = null;
@@ -77,23 +78,40 @@
     authorizeWindow.location = authorizeUrl;
   }
 
-  function getIdToken(fragment) {
+  var accessTokenCallbacks = {};
+  var accessTokenFetchIndex = 0;
+
+  function fetchAccessToken(scope, callback) {
+    var accessFrame = this.sessionFrame = document.createElement('iframe');
+    accessTokenCallbacks[accessTokenFetchIndex] = {callback: callback, frame: accessFrame};
+    accessFrame.setAttribute('src', Singular.properties.uaaLocation + '/oauth/authorize?response_type=token&scope=' + encodeURIComponent(scope) + '&client_id=' + Singular.properties.clientId + '&prompt=none&redirect_uri=' + encodeURIComponent(postAccessLocation + '?' + accessTokenFetchIndex));
+    document.body.appendChild(accessFrame);
+    accessTokenFetchIndex++;
+  }
+
+  function afterAccess(index) {
+    var fetch = this.accessTokenCallbacks[index];
+    var token = getToken(fetch.frame.contentWindow.location.hash.substring(1), 'access_token');
+    document.body.removeChild(fetch.frame);
+    fetch.callback(token);
+    delete this.accessTokenCallbacks[index];
+  }
+
+  function getToken(fragment, type) {
     var params = fragment.split('&');
     for (var i in params) {
-      if (params[i].startsWith('id_token=')) {
-        return params[i].substring(9);
+      if (params[i].startsWith(type+'=')) {
+        return params[i].substring(type.length+1);
       }
     }
   }
 
-  function getClaims(fragment) {
-    var jwt = getIdToken(fragment);
+  function getClaims(fragment, type) {
+    var jwt = getToken(fragment, type);
     if (!jwt) {
       return null;
     }
-    var base64Url = jwt.split('.')[1];
-    var base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
+    return Singular.decodeJwt(jwt);
   }
 
   function getOrigin(url) {

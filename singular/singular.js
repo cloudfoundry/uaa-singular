@@ -33,5 +33,15 @@ var Singular = {
       document.body.appendChild(sessionFrame);
       document.body.appendChild(clientFrame);
     });
+  },
+
+  decodeJwt: function (jwt) {
+    var base64Url = jwt.split('.')[1];
+    var base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+  },
+
+  access: function (scope, callback) {
+    return this.clientFrame.contentWindow.fetchAccessToken(scope, callback);
   }
 };
