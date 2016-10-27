@@ -41,7 +41,22 @@ var Singular = {
     return JSON.parse(window.atob(base64));
   },
 
-  access: function (scope, callback) {
-    return this.clientFrame.contentWindow.fetchAccessToken(scope, callback);
+  access: function (scope) {
+    var frame = this.clientFrame;
+
+    var p = new Promise(function(resolve, reject) {
+      frame.contentWindow.fetchAccessToken(scope,
+        function(token, error) {
+          if (!error && token!=null) {
+            resolve(token);
+          } else {
+            reject(error);
+          }
+        }
+      );
+    });
+
+    return p;
+
   }
 };
