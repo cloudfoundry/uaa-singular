@@ -11,6 +11,16 @@
       onIdentityChange: function (identity) {
         console.log('User ' + identity.user_name + ' logged in');
         messageDiv.innerHTML = identity.user_name;
+
+        var tokenPromise = Singular.access('uaa.admin');
+
+        tokenPromise
+          .then(function(token){
+            messageDiv.innerHTML += '<br/>access_token=' + token;
+          })
+          .catch(function(error){
+            messageDiv.innerHTML += '<br/>Error obtaining token: ' + error;
+          })
       },
       onLogout: function () {
         console.log('User logged out');
