@@ -12,7 +12,7 @@
         console.log('User ' + identity.user_name + ' logged in');
         messageDiv.innerHTML = identity.user_name;
 
-        var tokenPromise = Singular.access('uaa.admin');
+        var tokenPromise = Singular.access('openid');
 
         tokenPromise
           .then(function(token){
