@@ -31,6 +31,30 @@ module.exports = {
       .end();
   },
 
+  'test call access method when page is not loaded': function (browser) {
+    browser
+      .url(testAppUrl)
+      .execute(function(){return tokenPromise},[], function(result){
+        this.assert.equal(result.status, 0);
+        this.assert.equal(result.value, 'login_required');
+      })
+      .executeAsync(function(done) {
+        var invalidPromise = Singular.access('cloud_controller.read,cloud_controller.write');
+        invalidPromise
+          .then(function (token){
+            done({token: token});
+          })
+          .catch(function(error){
+            done({error: error});
+          })
+      }, [], function(result) {
+        this.assert.equal(result.status, 0);
+        this.assert.ok(!result.value.token);
+        this.assert.equal(result.value.error, 'login_required');
+      })
+      .end();
+  },
+
   'test retrieve multiple access tokens after logged in' : function (browser) {
     login(browser)
       .url(testAppUrl)

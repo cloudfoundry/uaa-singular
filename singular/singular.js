@@ -9,24 +9,28 @@ var Singular = {
     storageKey: 'singularUserIdentityClaims',
     authTimeout: 20000
   },
+  clientFrameLoaded : false,
 
   init: function (params) {
     if (params) {
       for (var p in params) {
-        this.properties[p] = params[p];
+        Singular.properties[p] = params[p];
       }
     }
 
     var invisibleStyle = 'display: none;';
 
-    var sessionFrame = this.sessionFrame = document.createElement('iframe');
+    var sessionFrame = Singular.sessionFrame = document.createElement('iframe');
     sessionFrame.setAttribute('style', invisibleStyle);
-    var sessionSrc = this.properties.uaaLocation + '/session?clientId=' + this.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin);
+    var sessionSrc = Singular.properties.uaaLocation + '/session?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin);
     sessionFrame.setAttribute('src', sessionSrc);
 
-    var clientFrame = this.clientFrame = document.createElement('iframe');
+    var clientFrame = Singular.clientFrame = document.createElement('iframe');
+    clientFrame.onload = function() {
+      Singular.clientFrameLoaded = true;
+    };
     clientFrame.setAttribute('style', invisibleStyle);
-    var clientSrc = this.singularLocation.substring(0, this.singularLocation.lastIndexOf('/')) + '/client_frame.html';
+    var clientSrc = Singular.singularLocation.substring(0, Singular.singularLocation.lastIndexOf('/')) + '/client_frame.html';
     clientFrame.setAttribute('src', clientSrc);
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -42,21 +46,27 @@ var Singular = {
   },
 
   access: function (scope) {
-    var frame = this.clientFrame;
+    var frame = Singular.clientFrame;
 
     var p = new Promise(function(resolve, reject) {
-      frame.contentWindow.fetchAccessToken(scope,
-        function(token, error) {
-          if (!error && token!=null) {
-            resolve(token);
-          } else {
-            reject(error);
+      var fetchAccessToken = function() {
+        frame.contentWindow.fetchAccessToken(scope,
+          function(token, error) {
+            if (!error && token!=null) {
+              resolve(token);
+            } else {
+              reject(error);
+            }
           }
-        }
-      );
+        );
+      }
+
+      if(!Singular.clientFrameLoaded){
+        Singular.clientFrame.addEventListener('load', fetchAccessToken)
+      } else{
+        fetchAccessToken();
+      }
     });
-
     return p;
-
   }
 };

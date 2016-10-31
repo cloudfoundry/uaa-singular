@@ -12,8 +12,8 @@
         console.log('User ' + identity.user_name + ' logged in');
         messageDiv.innerHTML = identity.user_name;
 
-        var tokenPromise = Singular.access('openid');
-
+        //Get accessToken since new user logged in
+        var tokenPromise = Singular.access('cloud_controller.read');
         tokenPromise
           .then(function(token){
             messageDiv.innerHTML += '<br/>access_token=' + token;
