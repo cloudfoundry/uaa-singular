@@ -1,5 +1,5 @@
 var Singular = {
-  singularLocation: document.getElementsByTagName('script')[document.getElementsByTagName('script').length - 1].src,
+  singularLocation: document.getElementById('singular_script').src,
   properties: {
     onIdentityChange: function () {},
     onLogout: function () {},
