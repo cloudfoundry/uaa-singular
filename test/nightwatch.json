@@ -4,10 +4,12 @@
 
   "selenium" : {
     "start_process" : true,
-    "log_path" : "tmp",
     "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.0.0.jar",
+    "log_path" : "",
+    "port": 4444,
     "cli_args" : {
-      "webdriver.gecko.driver" : "../node_modules/geckodriver/bin/geckodriver"
+      "webdriver.chrome.driver" : "../node_modules/chromedriver/bin/chromedriver",
+      "auto-open-devtools-for-tabs": "true"
     }
   },
 
@@ -22,7 +24,7 @@
         "path" : "tmp/screenshots"
       },
       "desiredCapabilities": {
-        "browserName": "firefox",
+        "browserName": "chrome",
         "javascriptEnabled" : true
       }
     }

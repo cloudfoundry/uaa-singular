@@ -1,20 +1,19 @@
 {
   "name": "singular-test",
-  "version" : "1.0.0",
+  "version": "1.0.0",
   "dependencies": {
-    "http-server" : "",
-    "selenium-standalone-jar" : "^2.53.1",
-    "selenium-server-standalone-jar" : "3.0.0",
-    "geckodriver" : "^1.1.3",
-    "nightwatch" : "^0.9.8",
-    "jwt-simple" : "^0.5.0"
+    "chromedriver": "^2.34.1",
+    "http-server": "",
+    "jwt-simple": "^0.5.0",
+    "nightwatch": "^0.9.19",
+    "selenium-server-standalone-jar": "3.0.0"
   },
-  "scripts" : {
-    "get-uaa" : "git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
-    "start-uaa" : "sh test/startUAA.sh",
-    "stop-uaa" : "cd test/tmp/uaa && ./gradlew cargoStopLocal",
-    "start-singular-app" : "sh test/startHttpServer.sh",
-    "stop-singular-app" : "kill $(cat test/tmp/httpServer.pid.tmp) && rm test/tmp/httpServer.pid.tmp",
-    "test" : "cd test && ../node_modules/nightwatch/bin/nightwatch"
+  "scripts": {
+    "get-uaa": "git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
+    "start-uaa": "sh test/startUAA.sh",
+    "stop-uaa": "cd test/tmp/uaa && ./gradlew cargoStopLocal",
+    "start-singular-app": "sh test/startHttpServer.sh",
+    "stop-singular-app": "kill $(cat test/tmp/httpServer.pid.tmp) && rm test/tmp/httpServer.pid.tmp",
+    "test": "cd test && ../node_modules/nightwatch/bin/nightwatch"
   }
 }
