@@ -7,7 +7,7 @@
     var info = {identitiesReceived: [], logouts: 0};
     Singular.init({
       uaaLocation: "http://localhost:8080/uaa",
-      clientId: 'cf',
+      clientId: 'singular-test-client',
       onIdentityChange: function (identity) {
         info.identitiesReceived.push(identity);
       },
