@@ -70,7 +70,6 @@ module.exports = {
             done({error: error});
           })
       }, [], function(result) {
-        console.log(result);
         this.assert.equal(result.status, 0);
         var readClaims = jwt.decode(result.value.tokens[0], null, true);
         this.assert.ok(readClaims);
