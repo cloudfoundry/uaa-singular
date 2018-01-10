@@ -34,9 +34,9 @@ module.exports = {
   'test call access method when page is not loaded': function (browser) {
     browser
       .url(testAppUrl)
-      .execute(function(){return tokenPromise},[], function(result){
+      .execute(function(){return info},[], function(result){
         this.assert.equal(result.status, 0);
-        this.assert.equal(result.value, 'login_required');
+        this.assert.equal(result.value.error, 'login_required');
       })
       .executeAsync(function(done) {
         var invalidPromise = Singular.access('cloud_controller.read,cloud_controller.write');
