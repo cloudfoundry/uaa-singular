@@ -9,7 +9,7 @@
     "selenium-server-standalone-jar": "3.0.0"
   },
   "scripts": {
-    "get-uaa": "git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
+    "get-uaa": "rm -rf test/tmp/uaa && git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
     "start-uaa": "sh test/startUAA.sh",
     "stop-uaa": "cd test/tmp/uaa && ./gradlew cargoStopLocal",
     "start-singular-app": "sh test/startHttpServer.sh",

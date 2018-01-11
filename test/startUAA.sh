@@ -2,8 +2,9 @@
 
 set -e
 
-cd test/tmp/uaa
-./gradlew cargoRunLocal &
+pushd test/tmp/uaa
+    ./gradlew cargoRunLocal &
+popd
 
 while [ true ]; do
   resp=$(set +e; curl -sf "http://localhost:8080/uaa"; echo $?);
@@ -21,6 +22,7 @@ ACCESS_TOKEN=$(curl http://localhost:8080/uaa/oauth/token -X POST  \
     | jq '.access_token' \
     | tr -d '"')
 
+echo "Creating the test client singular-test-client"
 curl http://localhost:8080/uaa/oauth/clients -X POST \
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${ACCESS_TOKEN}" \
