@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
-pushd test/tmp/uaa
-    ./gradlew cargoRunLocal &
-popd
+cd test/tmp/uaa
+./gradlew cargoRunLocal &
 
 while [ true ]; do
   resp=$(set +e; curl -sf "http://localhost:8080/uaa"; echo $?);
