@@ -4,12 +4,11 @@
 
   "selenium" : {
     "start_process" : true,
-    "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.0.0.jar",
+    "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.8.1.jar",
     "log_path" : "",
     "port": 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "../node_modules/chromedriver/bin/chromedriver",
-      "auto-open-devtools-for-tabs": "true"
+      "webdriver.chrome.driver" : "../node_modules/chromedriver/bin/chromedriver"
     }
   },
 
@@ -25,7 +24,10 @@
       },
       "desiredCapabilities": {
         "browserName": "chrome",
-        "javascriptEnabled" : true
+        "javascriptEnabled" : true,
+        "chromeOptions" : {
+          "args" : ["--headless", "-no-sandbox"]
+        }
       }
     }
   }

@@ -9,7 +9,6 @@ module.exports = {
 
     login(browser)
       .url(testAppUrl)
-      .pause(1200)
       .executeAsync(function(done) {
         var readWritePromise = Singular.access('cloud_controller.read,cloud_controller.write');
         readWritePromise
@@ -95,7 +94,6 @@ module.exports = {
   'test retrieve access token without logging in' : function (browser) {
     browser
       .url(testAppUrl)
-      .pause(1200)
       .executeAsync(function(done) {
         var invalidPromise = Singular.access('cloud_controller.read,cloud_controller.write');
         invalidPromise
@@ -116,7 +114,6 @@ module.exports = {
   'test retrieve access token with unauthorized scope' : function (browser) {
     login(browser)
       .url(testAppUrl)
-      .pause(1200)
       .executeAsync(function(done) {
         var invalidPromise = Singular.access('uaa.admin');
         invalidPromise
@@ -142,5 +139,4 @@ function login(browser) {
     .setValue('input[name="username"]', 'marissa')
     .setValue('input[name="password"]', 'koala')
     .submitForm('input[name="username"]')
-    .pause(1200)
 }
