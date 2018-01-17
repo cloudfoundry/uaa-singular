@@ -6,7 +6,7 @@ cd test/tmp/uaa
 ./gradlew cargoRunLocal &
 
 START_TIME_IN_SEC=$(date +%s)
-UAA_START_TIMEOUT_SEC=300
+UAA_START_TIMEOUT_SEC=600
 
 while [ $(($(date +%s) - ${START_TIME_IN_SEC})) -lt ${UAA_START_TIMEOUT_SEC} ]; do
   resp=$(set +e; curl -sf "http://localhost:8080/uaa"; echo $?);
