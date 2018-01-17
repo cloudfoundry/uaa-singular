@@ -2,12 +2,12 @@
 <html>
 <head>
   <title>Singular Test</title>
-  <script type="application/javascript" src="../../singular/singular.js"></script>
+  <script type="application/javascript" src="../../singular/singular.js" id="singular_script"></script>
   <script type="application/javascript">
     var info = {identitiesReceived: [], logouts: 0};
     Singular.init({
       uaaLocation: "http://localhost:8080/uaa",
-      clientId: 'cf',
+      clientId: 'singular-test-client',
       onIdentityChange: function (identity) {
         info.identitiesReceived.push(identity);
       },

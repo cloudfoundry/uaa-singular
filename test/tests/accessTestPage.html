@@ -2,18 +2,22 @@
 <html>
 <head>
   <title>Singular Test</title>
-  <script type="application/javascript" src="../../singular/singular.js"></script>
+  <script type="application/javascript" src="../../singular/singular.js" id="singular_script"></script>
   <script type="application/javascript">
     var info = {};
     Singular.init({
       uaaLocation: "http://localhost:8080/uaa",
-      clientId: 'cf',
+      clientId: 'singular-test-client',
       onIdentityChange: function (identity) {
       },
       onLogout: function () {
       }
     });
-    var tokenPromise = Singular.access('openid');
+
+    Singular.access('openid').catch(function(a) {
+        info.error = a;
+    });
+
     function loginWindow() {
       window.open("http://localhost:8080/uaa", "LOGIN_WINDOW");
     }

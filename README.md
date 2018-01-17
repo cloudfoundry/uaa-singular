@@ -23,8 +23,8 @@ Singular requires a configured OAuth client in the UAA which requires at least t
 
 ## Using Singular
 To enable Singular login on a page, include the main script in the header:
-```
-<script type="application/javascript" src="singular/singular.js"></script>
+```html
+    <script type="application/javascript" src="singular/singular.js" id="singular_script"></script>
 ```
 Then use the `Singular.init` method to configure and start the authentication. The call to `Singular.init` can occur anywhere in the DOM.
 ```

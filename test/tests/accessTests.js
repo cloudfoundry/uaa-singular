@@ -9,7 +9,6 @@ module.exports = {
 
     login(browser)
       .url(testAppUrl)
-      .pause(1200)
       .executeAsync(function(done) {
         var readWritePromise = Singular.access('cloud_controller.read,cloud_controller.write');
         readWritePromise
@@ -34,9 +33,9 @@ module.exports = {
   'test call access method when page is not loaded': function (browser) {
     browser
       .url(testAppUrl)
-      .execute(function(){return tokenPromise},[], function(result){
+      .execute(function(){return info},[], function(result){
         this.assert.equal(result.status, 0);
-        this.assert.equal(result.value, 'login_required');
+        this.assert.equal(result.value.error, 'login_required');
       })
       .executeAsync(function(done) {
         var invalidPromise = Singular.access('cloud_controller.read,cloud_controller.write');
@@ -70,7 +69,6 @@ module.exports = {
             done({error: error});
           })
       }, [], function(result) {
-        console.log(result);
         this.assert.equal(result.status, 0);
         var readClaims = jwt.decode(result.value.tokens[0], null, true);
         this.assert.ok(readClaims);
@@ -96,7 +94,6 @@ module.exports = {
   'test retrieve access token without logging in' : function (browser) {
     browser
       .url(testAppUrl)
-      .pause(1200)
       .executeAsync(function(done) {
         var invalidPromise = Singular.access('cloud_controller.read,cloud_controller.write');
         invalidPromise
@@ -117,7 +114,6 @@ module.exports = {
   'test retrieve access token with unauthorized scope' : function (browser) {
     login(browser)
       .url(testAppUrl)
-      .pause(1200)
       .executeAsync(function(done) {
         var invalidPromise = Singular.access('uaa.admin');
         invalidPromise
@@ -143,5 +139,4 @@ function login(browser) {
     .setValue('input[name="username"]', 'marissa')
     .setValue('input[name="password"]', 'koala')
     .submitForm('input[name="username"]')
-    .pause(1200)
 }

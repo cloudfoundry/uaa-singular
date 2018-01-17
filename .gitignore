@@ -3,3 +3,5 @@
 *.pem
 node_modules
 !/.gitignore
+test/*.log
+tmp/
