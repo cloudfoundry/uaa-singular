@@ -8,7 +8,6 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .pause(1200)
       .execute(function() {return info;}, [], function (result) {
-        console.log('Status is: ', result);
         this.assert.equal(result.status, 0);
         this.assert.equal(result.value.logouts, 1);
         this.assert.equal(result.value.identitiesReceived.length, 0);
@@ -27,6 +26,7 @@ module.exports = {
       .url(testAppUrl)
       .pause(1200)
       .execute(function() {return info;}, [], function (result) {
+          console.log('Status is: ', result);
         this.assert.equal(result.status, 0);
         this.assert.equal(result.value.logouts, 0);
         this.assert.equal(result.value.identitiesReceived.length, 1);

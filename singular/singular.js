@@ -50,7 +50,7 @@ var Singular = {
 
     var p = new Promise(function(resolve, reject) {
       var fetchAccessToken = function() {
-        frame.contentWindow.fetchAccessToken(scope,
+          frame.contentWindow.fetchAccessToken(scope,
           function(token, error) {
             if (!error && token!=null) {
               resolve(token);
