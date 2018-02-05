@@ -1,4 +1,4 @@
-function RPFrame(singular, authorizeWindow) {
+function RPFrame(singular, authorizeWindow, window) {
     var authTimer = null;
     var userLoggedIn;
     var props = singular.properties;
@@ -17,17 +17,33 @@ function RPFrame(singular, authorizeWindow) {
         clearTimeout(authTimer);
         var fragment = authorizeWindow.location.hash;
         var claims;
+        var session_state;
 
-        if (fragment && fragment.length > 0) claims = getClaims(fragment.substring(1), 'id_token');
-
-        announceIdentity(claims);
+        if (fragment && fragment.length > 0) {
+            claims = getClaims(fragment.substring(1), 'id_token');
+            session_state = extractSessionState(fragment);
+        }
+        announceIdentity(claims, session_state);
         authTimer = null;
     }
 
-    function announceIdentity(claims) {
+    function extractSessionState(hashFragment) {
+        var queryPairs = hashFragment.substring(1).split("&");
+        var ss = '';
+        queryPairs.forEach(function (pair) {
+            var queryParts = pair.split("=");
+            if (queryParts[0] === 'session_state') {
+                ss = queryParts[1];
+                return;
+            }
+        });
+        return ss;
+    }
+
+    function announceIdentity(claims, session_state) {
         if (claims) {
             userLoggedIn = true;
-            storeIdentity(claims);
+            storeIdentity(claims, session_state);
             props.onIdentityChange(claims);
         } else {
             if (userLoggedIn === false) {
@@ -47,8 +63,8 @@ function RPFrame(singular, authorizeWindow) {
     function checkSession() {
         if (!authTimer) {
             var sessionFrame = singular.sessionFrame.contentWindow;
-            var sessionState = props.clientId + ' ' + getUserId();
-            sessionFrame.postMessage(sessionState, uaaOrigin);
+            var message = props.clientId + ' ' + getStoredSessionState();
+            sessionFrame.postMessage(message, uaaOrigin);
         }
     }
 
@@ -142,35 +158,42 @@ function RPFrame(singular, authorizeWindow) {
         }
     }
 
-    function getUserId() {
-        var claims = getStoredIdentity();
-        if (claims) {
-            return claims.user_id;
-        }
-        return '~';
-    }
-
     function getStoredIdentity() {
         if (!localStorage) {
             return null;
         }
         try {
-            return JSON.parse(localStorage.getItem(props.storageKey));
+            return JSON.parse(localStorage.getItem(claimsKey()));
         } catch (err) {
             clearStoredIdentity();
             return null;
         }
     }
 
+    function getStoredSessionState() {
+        var found = localStorage.getItem(sessionStateKey());
+        return found ? found : "garbage.garbage";
+    }
+
+    function claimsKey() {
+        return props.storageKey + '-claims'
+    }
+
+    function sessionStateKey() {
+        return props.storageKey + '-session_state'
+    }
+
     function clearStoredIdentity() {
         if (localStorage) {
-            localStorage.removeItem(props.storageKey);
+            localStorage.removeItem(claimsKey());
+            localStorage.removeItem(sessionStateKey())
         }
     }
 
-    function storeIdentity(claims) {
+    function storeIdentity(claims, session_state) {
         if (localStorage) {
-            localStorage.setItem(props.storageKey, JSON.stringify(claims));
+            localStorage.setItem(claimsKey(), JSON.stringify(claims));
+            localStorage.setItem(sessionStateKey(), session_state)
         }
     }
 
@@ -179,6 +202,7 @@ function RPFrame(singular, authorizeWindow) {
         afterAccess: afterAccess,
         afterAuthorize: afterAuthorize,
         receiveMessage: receiveMessage,
-        startCheckingSession: startCheckingSession
+        startCheckingSession: startCheckingSession,
+        extractSessionState: extractSessionState
     }
 }

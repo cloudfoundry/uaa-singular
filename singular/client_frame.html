@@ -7,14 +7,14 @@
 </body>
 <script type="application/javascript" src="./rpFrame.js"></script>
 <script type="application/javascript">
-var authorizeWindow = document.getElementById('authorizeFrame').contentWindow;
-var rpFrame = RPFrame(window.parent.Singular, authorizeWindow);
-window.addEventListener('message', rpFrame.receiveMessage, false);
+    var authorizeWindow = document.getElementById('authorizeFrame').contentWindow;
+    var rpFrame = RPFrame(window.parent.Singular, authorizeWindow, window);
+    window.addEventListener('message', rpFrame.receiveMessage, false);
 
-rpFrame.startCheckingSession();
+    rpFrame.startCheckingSession();
 
-window.fetchAccessToken = rpFrame.fetchAccessToken;
-window.afterAccess = rpFrame.afterAccess;
-window.afterAuthorize = rpFrame.afterAuthorize;
+    window.fetchAccessToken = rpFrame.fetchAccessToken;
+    window.afterAccess = rpFrame.afterAccess;
+    window.afterAuthorize = rpFrame.afterAuthorize;
 </script>
 </html>

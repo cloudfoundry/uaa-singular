@@ -22,7 +22,7 @@ var Singular = {
 
     var sessionFrame = Singular.sessionFrame = document.createElement('iframe');
     sessionFrame.setAttribute('style', invisibleStyle);
-    var sessionSrc = Singular.properties.uaaLocation + '/session?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin);
+    var sessionSrc = Singular.properties.uaaLocation + '/session_management?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin);
     sessionFrame.setAttribute('src', sessionSrc);
 
     var clientFrame = Singular.clientFrame = document.createElement('iframe');
