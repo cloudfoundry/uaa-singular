@@ -3,6 +3,7 @@ function RPFrame(singular, authorizeWindow, window) {
     var userLoggedIn;
     var props = singular.properties;
 
+    var EMPTY_SESSION_STATE = 'nostate.nosalt';
     var postAuthLocation = currentContext() + '/postauth.html';
     var postAccessLocation = currentContext() + '/postaccess.html';
     var uaaOrigin = getOrigin(props.uaaLocation);
@@ -47,10 +48,12 @@ function RPFrame(singular, authorizeWindow, window) {
             props.onIdentityChange(claims);
         } else {
             if (userLoggedIn === false) {
+                localStorage.setItem(sessionStateKey(), session_state);
                 return;
             }
             userLoggedIn = false;
             clearStoredIdentity();
+            localStorage.setItem(sessionStateKey(), session_state);
             props.onLogout();
         }
     }
@@ -75,17 +78,17 @@ function RPFrame(singular, authorizeWindow, window) {
             fetchNewToken();
         } else if (status === 'unchanged') {
             if (userLoggedIn === undefined) {
-                announceIdentity(getStoredIdentity());
+                announceIdentity(getStoredIdentity(), getStoredSessionState());
             }
         } else /* error */ {
-            announceIdentity(null);
+            announceIdentity(null, EMPTY_SESSION_STATE);
         }
     }
 
     function fetchNewToken() {
         authTimer = setTimeout(function () {
             authorizeWindow.location = 'about:blank';
-            announceIdentity(null);
+            announceIdentity(null, EMPTY_SESSION_STATE);
             authTimer = null;
         }, props.authTimeout);
         authorizeWindow.location = buildIdTokenUrl();
@@ -172,7 +175,7 @@ function RPFrame(singular, authorizeWindow, window) {
 
     function getStoredSessionState() {
         var found = localStorage.getItem(sessionStateKey());
-        return found ? found : "garbage.garbage";
+        return found ? found : EMPTY_SESSION_STATE;
     }
 
     function claimsKey() {
@@ -203,6 +206,7 @@ function RPFrame(singular, authorizeWindow, window) {
         afterAuthorize: afterAuthorize,
         receiveMessage: receiveMessage,
         startCheckingSession: startCheckingSession,
-        extractSessionState: extractSessionState
+        extractSessionState: extractSessionState,
+        announceIdentity: announceIdentity
     }
 }
