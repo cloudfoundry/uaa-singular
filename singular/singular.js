@@ -3,9 +3,9 @@ var Singular = {
   properties: {
     onIdentityChange: function () {},
     onLogout: function () {},
-    clientId: 'client',
+    clientId: '',
     checkInterval: 1000,
-    uaaLocation: 'http://localhost:8080/uaa',
+    uaaLocation: '',
     storageKey: 'singularUserIdentityClaims',
     authTimeout: 20000
   },

@@ -21,10 +21,17 @@ Singular requires a configured OAuth client in the UAA which requires at least t
 |          `scope`         | `["openid"]` |
 |       `autoapprove`      | `["openid"]` |
 
+
+## Installing Singular
+The uaa-singular package can be downloaded with the command:
+`npm install uaa-singular`
+
+This will create the node_modules directory in your current directory (if one doesn't exist yet) and will download the package to that directory.
+
 ## Using Singular
 To enable Singular login on a page, include the main script in the header:
 ```html
-    <script type="application/javascript" src="singular/singular.js" id="singular_script"></script>
+    <script type="application/javascript" src="node_modules/uaa-singular/singular/singular.js" id="singular_script"></script>
 ```
 Then use the `Singular.init` method to configure and start the authentication. The call to `Singular.init` can occur anywhere in the DOM.
 ```
