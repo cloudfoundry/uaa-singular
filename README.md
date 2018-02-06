@@ -20,7 +20,7 @@ Singular requires a configured OAuth client in the UAA which requires at least t
 | `authorized_grant_types` |  `implicit`  |
 |          `scope`         | `["openid"]` |
 |       `autoapprove`      | `["openid"]` |
-
+|       `redirect_uri`     | `[ "http://<singular-domain>/postauth.html","http://<singular-domain>/postaccess.html" ]` |
 
 ## Installing Singular
 The uaa-singular package can be downloaded with the command:
