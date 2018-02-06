@@ -1,6 +1,10 @@
 {
-  "name": "singular-test",
+  "name": "uaa-singular",
   "version": "1.8.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudfoundry/uaa-singular"
+  },
   "dependencies": {
     "chromedriver": "^2.34.1",
     "http-server": "",
