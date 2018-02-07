@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Singular Example</title>
+    <script type="application/javascript" src="node_modules/uaa-singular/singular/singular.js" id="singular_script"></script>
+    <script type="application/javascript">
+        var messageDiv;
+        Singular.init({
+            uaaLocation: "",
+            clientId: "",
+            onIdentityChange: function (identity) {
+                console.log('User ' + identity.user_name + ' logged in');
+                messageDiv.innerHTML = identity.user_name;
+
+                //Get accessToken since new user logged in
+                var tokenPromise = Singular.access('cloud_controller.read');
+                tokenPromise
+                    .then(function(token){
+                        messageDiv.innerHTML += '<br/>access_token=' + token;
+                    })
+                    .catch(function(error){
+                        messageDiv.innerHTML += '<br/>Error obtaining token: ' + error;
+                    })
+            },
+            onLogout: function () {
+                console.log('User logged out');
+                messageDiv.innerHTML = 'Click <a href="' + Singular.properties.uaaLocation + '" target="_blank">here</a> to log in';
+            }
+        });
+    </script>
+</head>
+<body>
+<div id="message"></div>
+<script type="application/javascript">
+    messageDiv = document.getElementById('message');
+</script>
+</body>
+</html>

@@ -61,6 +61,12 @@ Define all custom behavior for the application in `onIdentityChange`. The argume
 |      `authTimeout` |                                                         milliseconds to wait for an identity token to be retrieved before treating it as an error and logging the user out                                                         | `20000`                        |
 
 ## Example
-Included in this repository is an `example.html` which showcases a minimal use of Singular. Alter the file to call `init` with the location of a running UAA server and the ID of an appropriate OAuth client on that server. Due to browser security features which prevent cross-domain communication with local files, you will need to host this file as a web application. If you have `npm`, [http-server](https://www.npmjs.com/package/http-server) is a suitable minimalistic web server for static files. If the UAA server is accessed via HTTPS, then the example page will also need to be hosted on HTTPS.
+Included in this repository is an `/example` directory which showcases a minimal use of Singular. Before running the example, you must alter the `index.html` file. Inside of the call to `Singular.init`, you must provide the location of a running UAA and the `client_id` of an OAuth client on that server. The OAuth client must [meet these requirements](#server-side-prerequisites). Once you have made these configurations, run:
+ 
+ ```
+ cd example
+ npm install
+ npm run start-uaa-singular-app
+ ```
 
-Once started, the application will display the username of the currently logged-in user. If no user is logged in, it will present a link to the login page. Logging into and out of the UAA in another tab or window should update the page appropriately.
+Once started, the application will display the username of the currently logged-in user. If no user is logged in, it will present a link to the login page. Logging into and out of the UAA in another tab or window should update the page appropriately. 
