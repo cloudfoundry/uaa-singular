@@ -8,7 +8,7 @@ Singular is licensed under the Apache License, Version 2.0.
 ## Compatibility
 Singular should work with any web browser which supports Javascript `localStorage`, `postMessage`, and `DOMContentLoaded`, which includes these versions of major desktop browsers.
 
-| ![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_48x48.png) |
+| ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![IE](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Internet_Explorer_10_logo.svg/48px-Internet_Explorer_10_logo.svg.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) |
 |:------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------:|
 |                                        4.0+ ✔                                        |                                          6.0+ ✔                                         |                                                 9.0+ ✔                                                 |                                      10.50+ ✔                                     |                                        4.0+ ✔                                        |
 
@@ -58,6 +58,21 @@ Then use the `Singular.init` method to configure and start the authentication. T
   });
 </script>
 ```
+### Getting an access token
+It is possible to obtain an access token using sungular library. 
+Use `Singular.access` function to do that. This function returns a [pormise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+```
+var tokenPromise = Singular.access('resource.read,someotherscope');
+    tokenPromise
+      .then(function(token){
+        console.log("Access token with resource.read and someotherscope scopes: " + token )
+      })
+      .catch(function(error){
+        console.log("Error: " + error )
+      })
+```
+Make sure client has scopes `resource.read` and `someotherscope`.
+
 Define all custom behavior for the application in `onIdentityChange`. The argument passed to this callback will either be an object containing the identity claims of the logged-in user, or `null` indicating a logout. The application should treat this identity idempotently, as this callback may be invoked many times in the lifetime of the page as users log in and out of the UAA. The properties available for configuration in Singular can all be passed as fields in the argument of `init`.
 
 |      Property      |                                                                                                             Description                                                                                                            |             Default            |
