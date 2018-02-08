@@ -13,7 +13,7 @@
                 messageDiv.innerHTML = identity.user_name;
 
                 //Get accessToken since new user logged in
-                var tokenPromise = Singular.access('cloud_controller.read');
+                var tokenPromise = Singular.access('openid');
                 tokenPromise
                     .then(function(token){
                         messageDiv.innerHTML += '<br/>access_token=' + token;
