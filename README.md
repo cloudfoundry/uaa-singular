@@ -13,6 +13,9 @@ Singular should work with any web browser which supports Javascript `localStorag
 |                                        4.0+ ✔                                        |                                          6.0+ ✔                                         |                                                 9.0+ ✔                                                 |                                      10.50+ ✔                                     |                                        4.0+ ✔                                        |
 
 ## Server-side Prerequisites
+
+### OAuth client setup
+
 Singular requires a configured OAuth client in the UAA which requires at least the following properties. For more information about creating clients in the UAA, see the [API documentation](http://docs.cloudfoundry.org/api/uaa/#clients).
 
 |         Property         |     Value    |
@@ -21,6 +24,13 @@ Singular requires a configured OAuth client in the UAA which requires at least t
 |          `scope`         | `["openid"]` |
 |       `autoapprove`      | `["openid"]` |
 |       `redirect_uri`     | `[ "http://<singular-domain>/postauth.html","http://<singular-domain>/postaccess.html" ]` |
+
+### UAA version compatibility
+
+| Singular Version | UAA Version |
+|------------------|-------------|
+| v1.0.0           | 3.8.0 +     |
+| v1.2.0           | 4.10.0 +    |
 
 ## Installing Singular
 The uaa-singular package can be downloaded with the command:
