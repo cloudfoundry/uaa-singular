@@ -6,7 +6,7 @@
     "url": "https://github.com/cloudfoundry/uaa-singular"
   },
   "dependencies": {
-    "chromedriver": "^2.34.1",
+    "chromedriver": "^2.37.0",
     "http-server": "",
     "jasmine": "^2.9.0",
     "jasmine-core": "^2.9.1",
