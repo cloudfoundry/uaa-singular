@@ -23,7 +23,9 @@ Singular requires a configured OAuth client in the UAA which requires at least t
 | `authorized_grant_types` |  `implicit`  |
 |          `scope`         | `["openid"]` |
 |       `autoapprove`      | `["openid"]` |
-|       `redirect_uri`     | `[ "http://<singular-domain>/postauth.html","http://<singular-domain>/postaccess.html" ]` |
+|       `redirect_uri`     | `[ "http://<singular-domain>/PATH/TO/SINGULAR/postauth.html","http://<singular-domain>/PATH/TO/SINGULAR/postaccess.html" ]` |
+
+For the example `index.html`, you will also need to add `http://<singular-domain>/index.html` to the `redirect_uri` configuration.
 
 ### UAA version compatibility
 
