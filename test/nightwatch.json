@@ -5,9 +5,9 @@
   "selenium" : {
     "start_process" : true,
     "log_path" : "tmp",
-    "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.0.0.jar",
+    "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.11.0.jar",
     "cli_args" : {
-      "webdriver.gecko.driver" : "../node_modules/geckodriver/bin/geckodriver"
+      "webdriver.chrome.driver" : "../node_modules/chromedriver/bin/chromedriver"
     }
   },
 
@@ -22,8 +22,11 @@
         "path" : "tmp/screenshots"
       },
       "desiredCapabilities": {
-        "browserName": "firefox",
-        "javascriptEnabled" : true
+        "browserName": "chrome",
+        "javascriptEnabled" : true,
+        "chromeOptions" : {
+          "args" : ["--headless", "-no-sandbox"]
+        }
       }
     }
   }
