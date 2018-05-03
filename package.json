@@ -12,7 +12,8 @@
     "jasmine-core": "^2.9.1",
     "jwt-simple": "^0.5.0",
     "nightwatch": "^0.9.19",
-    "selenium-server-standalone-jar": "^3.8.1"
+    "selenium-server-standalone-jar": "^3.8.1",
+    "hoek": "^5.0.3"
   },
   "scripts": {
     "get-uaa": "rm -rf test/tmp/uaa && git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
