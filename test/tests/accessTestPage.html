@@ -13,7 +13,11 @@
       onLogout: function () {
       }
     });
-    var tokenPromise = Singular.access('openid');
+    var prePageLoadErr = undefined;
+    Singular.access('openid')
+      .catch(function(err) {
+        prePageLoadErr = err;
+      })
     function loginWindow() {
       window.open("http://localhost:8080/uaa", "LOGIN_WINDOW");
     }

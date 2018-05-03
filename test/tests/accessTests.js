@@ -34,7 +34,8 @@ module.exports = {
   'test call access method when page is not loaded': function (browser) {
     browser
       .url(testAppUrl)
-      .execute(function(){return tokenPromise},[], function(result){
+      .execute(function() {return prePageLoadErr}, [], function(result) {
+        this.assert.notEqual(result, undefined);
         this.assert.equal(result.status, 0);
         this.assert.equal(result.value, 'login_required');
       })
