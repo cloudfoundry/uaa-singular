@@ -50,6 +50,44 @@ describe("RP Frame", function () {
             });
 
         });
+    });
 
-    })
+    describe("memory management", function () {
+      beforeEach(function () {
+        var mockFrame = {
+          setAttribute: function(key, val) {},
+          contentWindow: {location: {hash: ''}}
+        };
+        var mockDom = {
+          createElement: function(str) {return mockFrame},
+          body: {
+            appendChild: function(o) {},
+            removeChild: function(o) {}
+          }
+        };
+        document = mockDom;
+
+        rp = RPFrame(
+          { properties: { uaaLocation: 'localhost:8080/' }},
+          {},
+          { location: { href: 'localhost:8080/', search: '?test', hash: '#test'}}
+        );
+      })
+
+      afterEach(function () {
+        document = undefined;
+      })
+
+      describe("after fetching access token", function () {
+        it("clears out accessTokenCallbacks correctly", function () {
+          expect(rp.getAccessTokenCallbackCount()).toBe(0);
+
+          rp.fetchAccessToken('openid', function(token, error) {});
+          expect(rp.getAccessTokenCallbackCount()).toBe(1);
+
+          rp.afterAccess(0);
+          expect(rp.getAccessTokenCallbackCount()).toBe(0);
+        })
+      })
+    });
 });
