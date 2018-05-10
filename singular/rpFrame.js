@@ -132,7 +132,7 @@ function RPFrame(singular, authorizeWindow, window) {
         }
         fetch.callback(token, error);
         document.body.removeChild(fetch.frame);
-        delete this.accessTokenCallbacks[index];
+        delete accessTokenCallbacks[index];
     }
 
     function getToken(fragment, type) {
@@ -200,6 +200,10 @@ function RPFrame(singular, authorizeWindow, window) {
         }
     }
 
+    function getAccessTokenCallbackCount() {
+      return Object.keys(accessTokenCallbacks).length;
+    }
+
     return {
         fetchAccessToken: fetchAccessToken,
         afterAccess: afterAccess,
@@ -207,6 +211,7 @@ function RPFrame(singular, authorizeWindow, window) {
         receiveMessage: receiveMessage,
         startCheckingSession: startCheckingSession,
         extractSessionState: extractSessionState,
-        announceIdentity: announceIdentity
+        announceIdentity: announceIdentity,
+        getAccessTokenCallbackCount: getAccessTokenCallbackCount
     }
 }
