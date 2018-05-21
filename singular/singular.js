@@ -18,6 +18,8 @@ var Singular = {
       }
     }
 
+    this.validateProperties(params);
+
     var invisibleStyle = 'display: none;';
 
     var sessionFrame = Singular.sessionFrame = document.createElement('iframe');
@@ -37,6 +39,16 @@ var Singular = {
       document.body.appendChild(sessionFrame);
       document.body.appendChild(clientFrame);
     });
+  },
+
+  validateProperties: function(params) {
+    var requiredProperties = ["uaaLocation", "clientId"];
+    for (var p in requiredProperties) {
+      var requiredProperty = requiredProperties[p];
+      if (!params[requiredProperty]) {
+        throw "The \"" + requiredProperty + "\" field must be set and not empty";
+      }
+    }
   },
 
   decodeJwt: function (jwt) {

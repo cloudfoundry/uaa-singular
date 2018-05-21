@@ -1,6 +1,5 @@
 describe("RP Frame", function () {
     var localStorage = {setItem : {}};
-    // var localStorage = jasmine.createSpy('onIdentityChange');
     var fs = require('fs');
     eval(fs.readFileSync('singular/rpFrame.js', 'utf-8'));
     var rp;
