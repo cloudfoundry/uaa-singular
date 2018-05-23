@@ -2,12 +2,12 @@
 <html>
 <head>
     <title>Singular Example</title>
-    <script type="application/javascript" src="node_modules/uaa-singular/singular/singular.js" id="singular_script"></script>
+    <script type="application/javascript" src="../singular/singular.js" id="singular_script"></script>
     <script type="application/javascript">
         var messageDiv;
         Singular.init({
-            uaaLocation: "",
-            clientId: "",
+            uaaLocation: "http://10.80.2.5:8080/uaa",
+            clientId: "singular-test-client",
             onIdentityChange: function (identity) {
                 console.log('User ' + identity.user_name + ' logged in');
                 messageDiv.innerHTML = identity.user_name;

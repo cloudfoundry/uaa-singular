@@ -1,11 +1,14 @@
+import post_access from './postaccess.html';
+import post_auth from './postauth.html';
+
 function RPFrame(singular, authorizeWindow, window) {
     var authTimer = null;
     var userLoggedIn;
     var props = singular.properties;
 
     var EMPTY_SESSION_STATE = 'nostate.nosalt';
-    var postAuthLocation = currentContext() + '/postauth.html';
-    var postAccessLocation = currentContext() + '/postaccess.html';
+    var postAuthLocation = currentContext() + '/' + post_auth;
+    var postAccessLocation = currentContext() + '/' + post_access;
     var uaaOrigin = getOrigin(props.uaaLocation);
     var accessTokenCallbacks = {};
     var accessTokenFetchIndex = 0;
@@ -155,7 +158,7 @@ function RPFrame(singular, authorizeWindow, window) {
 
     function getOrigin(url) {
         try {
-            return origin = /^(\S+?:\/\/[a-z0-9-.]+(:[0-9]+)?)/ig.exec(url)[0] + '/';
+            return /^(\S+?:\/\/[a-z0-9-.]+(:[0-9]+)?)/ig.exec(url)[0] + '/';
         } catch (err) {
             return null;
         }
@@ -215,3 +218,5 @@ function RPFrame(singular, authorizeWindow, window) {
         getAccessTokenCallbackCount: getAccessTokenCallbackCount
     }
 }
+
+export default RPFrame;

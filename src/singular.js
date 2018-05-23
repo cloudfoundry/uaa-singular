@@ -1,3 +1,5 @@
+import client_frame from './client_frame.html';
+
 var Singular = {
   singularLocation: document.getElementById('singular_script').src,
   properties: {
@@ -21,7 +23,6 @@ var Singular = {
     this.validateProperties(params);
 
     var invisibleStyle = 'display: none;';
-
     var sessionFrame = Singular.sessionFrame = document.createElement('iframe');
     sessionFrame.setAttribute('style', invisibleStyle);
     var sessionSrc = Singular.properties.uaaLocation + '/session_management?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin);
@@ -32,7 +33,7 @@ var Singular = {
       Singular.clientFrameLoaded = true;
     };
     clientFrame.setAttribute('style', invisibleStyle);
-    var clientSrc = Singular.singularLocation.substring(0, Singular.singularLocation.lastIndexOf('/')) + '/client_frame.html';
+    var clientSrc = Singular.singularLocation.substring(0, Singular.singularLocation.lastIndexOf('/')) + "/" + client_frame;
     clientFrame.setAttribute('src', clientSrc);
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -82,3 +83,5 @@ var Singular = {
     return p;
   }
 };
+
+export default Singular;

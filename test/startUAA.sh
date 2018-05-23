@@ -3,7 +3,7 @@
 set -ex
 
 cd test/tmp/uaa
-./gradlew cargoRunLocal &
+./gradlew cargoRunLocal 2>&1 > /dev/null &
 
 START_TIME_IN_SEC=$(date +%s)
 UAA_START_TIMEOUT_SEC=600
@@ -34,7 +34,7 @@ curl http://localhost:8080/uaa/oauth/clients -X POST \
   "client_id" : "singular-test-client",
   "resource_ids" : [ ],
   "authorized_grant_types" : [ "implicit" ],
-  "redirect_uri" : [ "http://localhost:8000/**","http://localhost:8080/**" ],
+  "redirect_uri" : [ "http://localhost:8000/**","http://10.80.2.5:8000/**" ],
   "autoapprove" : true,
   "name" : "Singular Test Client"
 }'
