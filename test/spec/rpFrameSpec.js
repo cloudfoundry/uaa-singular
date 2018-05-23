@@ -5,8 +5,11 @@ describe("RP Frame", function () {
     var rp;
 
     describe("extractSessionState", function () {
+        var FakeUrlValidator = jasmine.createSpyObj('validator', ['checkClientConfiguration']);
+
         beforeEach(function() {
             rp = RPFrame({ properties: { uaaLocation: 'localhost:8080/' }}, {}, { location: { href: 'localhost:8080/', search: '?test', hash: '#test'}});
+            rp.setUaaValidator(FakeUrlValidator);
         });
 
         it("finds the session state in hash fragment", function () {
@@ -51,6 +54,20 @@ describe("RP Frame", function () {
         });
     });
 
+    describe("validating client configuration", function() {
+      var FakeUrlValidator = jasmine.createSpyObj('validator', ['checkClientConfiguration']);
+
+      beforeEach(function() {
+        rp = RPFrame({ properties: { uaaLocation: 'localhost:8080/' }}, {}, { location: { href: 'localhost:8080/', search: '?test', hash: '#test'}});
+        rp.setUaaValidator(FakeUrlValidator);
+      });
+
+      it("uses the UaaValidator", function() {
+        rp.checkClientConfig();
+        expect(FakeUrlValidator.checkClientConfiguration).toHaveBeenCalled()
+      });
+    });
+
     describe("memory management", function () {
       beforeEach(function () {
         var mockFrame = {
@@ -75,7 +92,7 @@ describe("RP Frame", function () {
 
       afterEach(function () {
         document = undefined;
-      })
+      });
 
       describe("after fetching access token", function () {
         it("clears out accessTokenCallbacks correctly", function () {

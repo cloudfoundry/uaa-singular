@@ -1,10 +1,13 @@
 import post_access from './postaccess.html';
 import post_auth from './postauth.html';
 
+const UaaValidator = require('./uaaValidator');
+
 function RPFrame(singular, authorizeWindow, window) {
     var authTimer = null;
     var userLoggedIn;
     var props = singular.properties;
+    var _validator = UaaValidator;
 
     var EMPTY_SESSION_STATE = 'nostate.nosalt';
     var postAuthLocation = currentContext() + '/' + post_auth;
@@ -204,7 +207,20 @@ function RPFrame(singular, authorizeWindow, window) {
     }
 
     function getAccessTokenCallbackCount() {
-      return Object.keys(accessTokenCallbacks).length;
+       return Object.keys(accessTokenCallbacks).length;
+    }
+
+    function checkClientConfig() {
+      var accessTokenUrl = buildAccessTokenUrl('openid', postAccessLocation, accessTokenFetchIndex);
+      getUaaValidator().checkClientConfiguration(accessTokenUrl, props.clientId);
+    }
+
+    function getUaaValidator() {
+        return _validator;
+    }
+
+    function setUaaValidator(validator) {
+        _validator = validator;
     }
 
     return {
@@ -215,7 +231,10 @@ function RPFrame(singular, authorizeWindow, window) {
         startCheckingSession: startCheckingSession,
         extractSessionState: extractSessionState,
         announceIdentity: announceIdentity,
-        getAccessTokenCallbackCount: getAccessTokenCallbackCount
+        getAccessTokenCallbackCount: getAccessTokenCallbackCount,
+        getUaaValidator: getUaaValidator,
+        setUaaValidator: setUaaValidator,
+        checkClientConfig: checkClientConfig
     }
 }
 

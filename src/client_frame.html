@@ -11,6 +11,7 @@
     var rpFrame = RPFrame(window.parent.Singular, authorizeWindow, window);
     window.addEventListener('message', rpFrame.receiveMessage, false);
 
+    rpFrame.checkClientConfig();
     rpFrame.startCheckingSession();
 
     window.fetchAccessToken = rpFrame.fetchAccessToken;
