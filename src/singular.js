@@ -1,5 +1,8 @@
 import client_frame from './client_frame.html';
 
+const VersionUtils = require('./versionUtils');
+const UaaValidator = require('./uaaValidator');
+
 var Singular = {
   singularLocation: document.getElementById('singular_script').src,
   properties: {
@@ -50,6 +53,8 @@ var Singular = {
         throw "The \"" + requiredProperty + "\" field must be set and not empty";
       }
     }
+
+    this.getUaaValidator().isValidUAA(params.uaaLocation);
   },
 
   decodeJwt: function (jwt) {
@@ -81,6 +86,14 @@ var Singular = {
       }
     });
     return p;
+  },
+
+  getUaaValidator: function() {
+    return this.validator || UaaValidator;
+  },
+
+  setUaaValidator: function(validator) {
+    this.validator = validator;
   }
 };
 
