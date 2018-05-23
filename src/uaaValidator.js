@@ -21,7 +21,7 @@ module.exports = {
   isValidUAA: function(url) {
     get(url + "/info", function(req) {
       if (req.status !== 200) {
-        throw url + " does not appear to be a running UAA instance"
+        throw url + " does not appear to be a running UAA instance or may not have a trusted SSL certificate"
       }
 
       var uaaVersion = JSON.parse(req.response).app.version;
