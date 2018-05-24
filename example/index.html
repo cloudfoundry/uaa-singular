@@ -25,7 +25,10 @@
             },
             onLogout: function () {
                 console.log('User logged out');
-                messageDiv.innerHTML = 'Click <a href="' + Singular.properties.uaaLocation + '" target="_blank">here</a> to log in';
+                //Using a standard OAuth redirect to implement an initial login behavior that redirects back to the application
+                //This is optional as UAA Singular can detect logins that occur in other browser tabs
+                var loginRedirectUrl = Singular.properties.uaaLocation + '/oauth/authorize?response_type=id_token&client_id=' + Singular.properties.clientId + '&redirect_uri=' + window.location.href;
+                messageDiv.innerHTML = 'Click <a href="' + loginRedirectUrl + '">here</a> to log in';
             }
         });
     </script>
