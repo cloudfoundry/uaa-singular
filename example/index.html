@@ -6,25 +6,38 @@
     <script type="application/javascript">
         var messageDiv;
         Singular.init({
+            // Static assets directory where singular.js and associated html files are served from your app
             singularLocation: "./node_modules/uaa-singular/singular/",
-            uaaLocation: "http://localhost:8080/uaa",
-            clientId: "singular-test-client",
+
+            uaaLocation: "",
+            clientId: "",
+
             onIdentityChange: function (identity) {
                 console.log('User ' + identity.user_name + ' logged in');
                 messageDiv.innerHTML = identity.user_name;
 
                 //Get accessToken since new user logged in
+                //This is required as part of UAA Singular usage
                 var tokenPromise = Singular.access('openid');
                 tokenPromise
                     .then(function(token){
+                        //This function is customizable
                         messageDiv.innerHTML += '<br/>access_token=' + token;
+
+                        //This is an example of the logout endpoint of UAA to log the user out of the session at the UAA level.
+                        //Once the logout occurs, all applications using Singular against the same login location would also logout.
+                        //This is optional as UAA Singular can detect logouts that occur in other browser tabs
+                        var logoutRedirectUrl = Singular.properties.uaaLocation + '/logout.do?client_id=' + Singular.properties.clientId + '&redirect=' + window.location.href;
+                        messageDiv.innerHTML += '<br/> Click <a href="' + logoutRedirectUrl + '">here</a> to log out';
                     })
                     .catch(function(error){
+                        //This function is customizable
                         messageDiv.innerHTML += '<br/>Error obtaining token: ' + error;
                     })
             },
             onLogout: function () {
                 console.log('User logged out');
+
                 //Using a standard OAuth redirect to implement an initial login behavior that redirects back to the application
                 //This is optional as UAA Singular can detect logins that occur in other browser tabs
                 var loginRedirectUrl = Singular.properties.uaaLocation + '/oauth/authorize?response_type=id_token&client_id=' + Singular.properties.clientId + '&redirect_uri=' + window.location.href;
