@@ -2,10 +2,11 @@
 <html>
 <head>
     <title>Singular Example</title>
-    <script type="application/javascript" src="./node_modules/uaa-singular/singular/singular.js" id="singular_script"></script>
+    <script type="application/javascript" src="./node_modules/uaa-singular/singular/singular.js"></script>
     <script type="application/javascript">
         var messageDiv;
         Singular.init({
+            singularLocation: "./node_modules/uaa-singular/singular/",
             uaaLocation: "http://localhost:8080/uaa",
             clientId: "singular-test-client",
             onIdentityChange: function (identity) {

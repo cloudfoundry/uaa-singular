@@ -3,9 +3,11 @@ import client_frame from './client_frame.html';
 const VersionUtils = require('./versionUtils');
 const UaaValidator = require('./uaaValidator');
 
+
+
 var Singular = {
-  singularLocation: document.getElementById('singular_script').src,
   properties: {
+    singularLocation: '',
     onIdentityChange: function () {},
     onLogout: function () {},
     clientId: '',
@@ -15,6 +17,17 @@ var Singular = {
     authTimeout: 20000
   },
   clientFrameLoaded : false,
+
+  singularLocation: function() {
+    if (Singular.properties.singularLocation !== '') {
+      return Singular.properties.singularLocation;
+    } else if (document.getElementById('singular_script').src) {
+      var scriptLocation = document.getElementById('singular_script').src;
+      return scriptLocation.substring(0, scriptLocation.lastIndexOf('/'));
+    } else {
+      throw "singularLocation must not be blank";
+    }
+  },
 
   init: function (params) {
     if (params) {
@@ -36,8 +49,7 @@ var Singular = {
       Singular.clientFrameLoaded = true;
     };
     clientFrame.setAttribute('style', invisibleStyle);
-    var clientSrc = Singular.singularLocation.substring(0, Singular.singularLocation.lastIndexOf('/')) + "/" + client_frame;
-    clientFrame.setAttribute('src', clientSrc);
+    clientFrame.setAttribute('src', this.singularLocation() + "/" + client_frame);
 
     document.addEventListener('DOMContentLoaded', function () {
       document.body.appendChild(sessionFrame);

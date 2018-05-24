@@ -21,7 +21,7 @@ describe("Singular", function () {
     it("validates uaaLocation is set", function() {
 
       var badinit = function() {
-        Singular.init({clientId: "boo"});
+        Singular.init({clientId: "boo", singularLocation: './node_modules/uaa-singular/singular' });
       };
 
       expect(badinit).toThrow("The \"uaaLocation\" field must be set and not empty");
@@ -29,7 +29,7 @@ describe("Singular", function () {
 
     it("validates the uaaLocation is actually a UAA", function() {
       var badinit = function() {
-        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url"});
+        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular' });
       };
 
       badinit();
@@ -38,7 +38,7 @@ describe("Singular", function () {
 
     it("validates clientId is set", function() {
       var badinit = function() {
-        Singular.init({uaaLocation: "baa"});
+        Singular.init({uaaLocation: "baa", singularLocation: './node_modules/uaa-singular/singular' });
       };
 
       expect(badinit).toThrow("The \"clientId\" field must be set and not empty");
