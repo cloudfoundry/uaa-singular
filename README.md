@@ -10,7 +10,7 @@ Singular should work with any web browser which supports Javascript `localStorag
 
 | ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![IE](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Internet_Explorer_10_logo.svg/48px-Internet_Explorer_10_logo.svg.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) |
 |:------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------:|
-|                                        4.0+ ✔                                        |                                          6.0+ ✔                                         |                                                 9.0+ ✔                                                 |                                      10.50+ ✔                                     |                                        4.0+ ✔                                        |
+|                                        41+ ✔                                        |                                          17+ ✔                                         |                                                 11+ ✔                                                 |                                      28+ ✔                                     |                                        9+ ✔                                        |
 
 ## Server-side Prerequisites
 
@@ -29,26 +29,28 @@ For the example `index.html`, you will also need to add `http://<singular-domain
 
 ### UAA version compatibility
 
-| Singular Version | UAA Version |
-|------------------|-------------|
-| v1.0.0           | 3.8.0 +     |
-| v1.2.0           | 4.10.0 +    |
+| Singular Version | UAA Version | UAA-Release Version |
+|------------------|-------------|---------------------|
+| v1.0.0           | 3.8.0 +     |                     |
+| v1.2.0           | 4.10.0 +    |                     |
+| v1.3.0           | 4.10.0 +    |                     |
 
 ## Installing Singular
-The uaa-singular package can be downloaded with the command:
-`npm install uaa-singular`
+The uaa-singular package can be downloaded with the command: `npm install uaa-singular`
 
 This will create the node_modules directory in your current directory (if one doesn't exist yet) and will download the package to that directory.
 
 ## Using Singular
 To enable Singular login on a page, include the main script in the header:
 ```html
-    <script type="application/javascript" src="node_modules/uaa-singular/singular/singular.js" id="singular_script"></script>
+    <script type="application/javascript" src="node_modules/uaa-singular/singular/singular.js"></script>
 ```
 Then use the `Singular.init` method to configure and start the authentication. The call to `Singular.init` can occur anywhere in the DOM.
 ```
 <script type="application/javascript">
   Singular.init({
+    // Static assets directory where singular.js and associated html files are served from your app
+    singularLocation: './node_modules/uaa-singular/singular/',
     clientId: 'exampleClient',
     uaaLocation: 'https://login.example.com',
     onIdentityChange: function (identity) {
@@ -62,7 +64,7 @@ Then use the `Singular.init` method to configure and start the authentication. T
 ```
 ### Getting an access token
 It is possible to obtain an access token using sungular library. 
-Use `Singular.access` function to do that. This function returns a [pormise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+Use `Singular.access` function to do that. This function returns a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 ```
 var tokenPromise = Singular.access('resource.read,someotherscope');
     tokenPromise
