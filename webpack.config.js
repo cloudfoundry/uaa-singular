@@ -9,12 +9,14 @@ var htmlFileReader =  {
       use: [
         {
           loader: 'file-loader',
-          options: {}
+          options: {
+            name: '[name].html'
+          }
         }
       ]
     }
   ]
-}
+};
 
 module.exports = [
   {
