@@ -2,7 +2,7 @@ var VersionUtils = require('./versionUtils');
 
 function get(url, callback) {
   var req = new XMLHttpRequest();
-  req.open("GET", url + "/info");
+  req.open("GET", url);
   req.setRequestHeader("Accept", "application/json");
   req.send();
 
