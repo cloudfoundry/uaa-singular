@@ -8,6 +8,7 @@
   "files": [
     "singular"
   ],
+  "main": "singular/singular.js",
   "dependencies": {
     "idempotent-babel-polyfill": "^0.1.1",
     "jwt-simple": "^0.5.0"
