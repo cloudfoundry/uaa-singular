@@ -13,7 +13,7 @@
     "jwt-simple": "^0.5.0"
   },
   "devDependencies": {
-    "http-server": "",
+    "http-server": "^0.11.1",
     "file-loader": "^1.1.11",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
