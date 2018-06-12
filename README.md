@@ -102,3 +102,15 @@ Included in this repository is an `/example` directory which showcases a minimal
  ```
 
 Once started, the application will display the username of the currently logged-in user. If no user is logged in, it will present a link to the login page. Logging into and out of the UAA in another tab or window should update the page appropriately. 
+
+## Running the tests
+
+```
+npm run get-uaa
+npm run start-uaa
+npm run start-singular-app
+npm test
+```
+
+`start-uaa` and `start-singular-app` spawn background processes.
+Be sure to run `npm run stop-uaa` and `npm run stop-singular-app` when finished.
