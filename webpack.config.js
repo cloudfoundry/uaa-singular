@@ -1,8 +1,6 @@
 const path = require('path');
 
-mode = 'none'
-
-var htmlFileReader =  {
+const htmlFileReader = {
   rules: [
     {
       test: /\.(html)$/,
@@ -21,13 +19,24 @@ var htmlFileReader =  {
 module.exports = [
   {
     module: htmlFileReader,
-    entry:
-      ['idempotent-babel-polyfill', './src/singular.js'],
+    entry: ['idempotent-babel-polyfill', './src/singular.js'],
     output: {
       filename: 'singular.js',
       path: path.resolve(__dirname, 'singular'),
       library: 'Singular',
-      libraryExport: 'default'
+      libraryExport: 'default',
+      libraryTarget: 'var'
+    }
+  },
+  {
+    module: htmlFileReader,
+    entry: ['idempotent-babel-polyfill', './src/singular.js'],
+    output: {
+      filename: 'singular.umd.js',
+      path: path.resolve(__dirname, 'singular'),
+      library: 'Singular',
+      libraryExport: 'default',
+      libraryTarget: 'umd'
     }
   },
   {
@@ -40,4 +49,4 @@ module.exports = [
       libraryExport: 'default'
     }
   }
-]
+];

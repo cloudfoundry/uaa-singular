@@ -52,6 +52,8 @@ var Singular = {
     clientFrame.setAttribute('src', this.singularLocation() + "/" + client_frame);
 
     document.addEventListener('DOMContentLoaded', function () {
+      window.parent.Singular = Singular;
+
       document.body.appendChild(sessionFrame);
       document.body.appendChild(clientFrame);
     });
