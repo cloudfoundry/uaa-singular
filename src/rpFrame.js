@@ -71,9 +71,9 @@ function RPFrame(singular, authorizeWindow, window) {
 
     function checkSession() {
         if (!authTimer) {
-            var sessionFrame = singular.sessionFrame.contentWindow;
+            var opFrame = singular.opFrame.contentWindow;
             var message = props.clientId + ' ' + getStoredSessionState();
-            sessionFrame.postMessage(message, uaaOrigin);
+            opFrame.postMessage(message, uaaOrigin);
         }
     }
 
@@ -120,7 +120,7 @@ function RPFrame(singular, authorizeWindow, window) {
     }
 
     function fetchAccessToken(scope, callback) {
-        var accessFrame = this.sessionFrame = document.createElement('iframe');
+        var accessFrame = this.opFrame = document.createElement('iframe');
         accessTokenCallbacks[accessTokenFetchIndex] = {callback: callback, frame: accessFrame};
         accessFrame.setAttribute('src', buildAccessTokenUrl(scope, postAccessLocation, accessTokenFetchIndex));
         document.body.appendChild(accessFrame);

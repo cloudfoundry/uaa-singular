@@ -3,8 +3,9 @@ import client_frame from './client_frame.html';
 const VersionUtils = require('./versionUtils');
 const UaaValidator = require('./uaaValidator');
 
-function createIframe(src) {
-    var iframe = Singular.sessionFrame = document.createElement('iframe');
+function createIframe(name, src) {
+    var iframe = document.createElement('iframe');
+    Singular[name] = iframe;
     iframe.setAttribute('style', 'display: none;');
     iframe.setAttribute('src', src);
     return iframe;
@@ -21,7 +22,7 @@ var Singular = {
     storageKey: 'singularUserIdentityClaims',
     authTimeout: 20000
   },
-  clientFrameLoaded : false,
+  rpFrameLoaded : false,
 
   singularLocation: function() {
     if (Singular.properties.singularLocation !== '') {
@@ -43,10 +44,11 @@ var Singular = {
 
     this.validateProperties(params);
 
-    var opIframe = createIframe(Singular.properties.uaaLocation + '/session_management?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin));
-    var rpIframe = createIframe(this.singularLocation() + "/" + client_frame);
+    var opIframe = createIframe('opFrame', Singular.properties.uaaLocation + '/session_management?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin));
+    var rpIframe = createIframe('rpFrame', this.singularLocation() + "/" + client_frame);
+
     rpIframe.onload = function() {
-      Singular.clientFrameLoaded = true;
+      Singular.rpFrameLoaded = true;
     };
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -76,7 +78,7 @@ var Singular = {
   },
 
   access: function (scope) {
-    var frame = Singular.clientFrame;
+    var frame = Singular.rpFrame;
 
     var p = new Promise(function(resolve, reject) {
       var fetchAccessToken = function() {
@@ -91,8 +93,8 @@ var Singular = {
         );
       }
 
-      if(!Singular.clientFrameLoaded){
-        Singular.clientFrame.addEventListener('load', fetchAccessToken)
+      if(!Singular.rpFrameLoaded){
+        Singular.rpFrame.addEventListener('load', fetchAccessToken)
       } else{
         fetchAccessToken();
       }
