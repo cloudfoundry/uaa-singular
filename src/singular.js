@@ -3,7 +3,12 @@ import client_frame from './client_frame.html';
 const VersionUtils = require('./versionUtils');
 const UaaValidator = require('./uaaValidator');
 
-
+function createIframe(src) {
+    var iframe = Singular.sessionFrame = document.createElement('iframe');
+    iframe.setAttribute('style', 'display: none;');
+    iframe.setAttribute('src', src);
+    return iframe;
+}
 
 var Singular = {
   properties: {
@@ -38,24 +43,17 @@ var Singular = {
 
     this.validateProperties(params);
 
-    var invisibleStyle = 'display: none;';
-    var sessionFrame = Singular.sessionFrame = document.createElement('iframe');
-    sessionFrame.setAttribute('style', invisibleStyle);
-    var sessionSrc = Singular.properties.uaaLocation + '/session_management?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin);
-    sessionFrame.setAttribute('src', sessionSrc);
-
-    var clientFrame = Singular.clientFrame = document.createElement('iframe');
-    clientFrame.onload = function() {
+    var opIframe = createIframe(Singular.properties.uaaLocation + '/session_management?clientId=' + Singular.properties.clientId + '&messageOrigin=' + encodeURIComponent(window.location.origin));
+    var rpIframe = createIframe(this.singularLocation() + "/" + client_frame);
+    rpIframe.onload = function() {
       Singular.clientFrameLoaded = true;
     };
-    clientFrame.setAttribute('style', invisibleStyle);
-    clientFrame.setAttribute('src', this.singularLocation() + "/" + client_frame);
 
     document.addEventListener('DOMContentLoaded', function () {
       window.parent.Singular = Singular;
 
-      document.body.appendChild(sessionFrame);
-      document.body.appendChild(clientFrame);
+      document.body.appendChild(opIframe);
+      document.body.appendChild(rpIframe);
     });
   },
 
