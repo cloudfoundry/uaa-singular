@@ -34,6 +34,8 @@
     "stop-uaa": "cd test/tmp/uaa && ./gradlew cargoStopLocal",
     "start-singular-app": "sh test/startHttpServer.sh",
     "stop-singular-app": "kill $(cat test/tmp/httpServer.pid.tmp) && rm test/tmp/httpServer.pid.tmp",
-    "test": "npm run build && node_modules/jasmine/bin/jasmine.js --config=jasmine.json && cd test && ../node_modules/nightwatch/bin/nightwatch"
+    "test": "npm run build && npm run unit-test && npm run integration-test",
+    "unit-test": "node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
+    "integration-test": "cd test && ../node_modules/nightwatch/bin/nightwatch"
   }
 }
