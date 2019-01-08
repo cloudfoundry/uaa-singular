@@ -22,8 +22,11 @@ describe("Singular", function () {
   });
 
   describe("Singular.init", function() {
-    it("validates uaaLocation is set", function() {
+    beforeEach(function () {
+      spyOn(document, 'addEventListener');
+    });
 
+    it("validates uaaLocation is set", function() {
       var badinit = function() {
         Singular.init({clientId: "boo", singularLocation: './node_modules/uaa-singular/singular' });
       };
@@ -31,11 +34,19 @@ describe("Singular", function () {
       expect(badinit).toThrow("The \"uaaLocation\" field must be set and not empty");
     });
 
-    describe("when the uaaLocation is actually a UAA", function () {
+    it("validates clientId is set", function() {
+      var badinit = function() {
+        Singular.init({uaaLocation: "baa", singularLocation: './node_modules/uaa-singular/singular' });
+      };
+
+      expect(badinit).toThrow("The \"clientId\" field must be set and not empty");
+    });
+
+    describe("when initializing singular", function () {
       var domContentLoaded;
 
       beforeEach(function () {
-        spyOn(document, 'addEventListener').and.callFake((_, cb) => domContentLoaded = cb);
+        document.addEventListener.and.callFake((_, cb) => domContentLoaded = cb);
         spyOn(document.body, 'appendChild').and.callThrough();
 
         Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular' });
@@ -50,7 +61,7 @@ describe("Singular", function () {
       });
 
       it("does not assign Singular to parent window", function () {
-        expect(window.parent.Singular).not.toBeFalsy();
+        expect(window.parent.Singular).toBeFalsy();
       });
 
       it("append Singular iframes", function () {
@@ -73,12 +84,29 @@ describe("Singular", function () {
       });
     });
 
-    it("validates clientId is set", function() {
-      var badinit = function() {
-        Singular.init({uaaLocation: "baa", singularLocation: './node_modules/uaa-singular/singular' });
-      };
+    describe("when initializing singular and domContentLoaded is true", function () {
+      beforeEach(function () {
+        spyOn(document.body, 'appendChild').and.callThrough();
 
-      expect(badinit).toThrow("The \"clientId\" field must be set and not empty");
+        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', domContentLoaded: true });
+      });
+
+      it("validates the uaaLocation", function() {
+        expect(Singular.getUaaValidator().isValidUAA).toHaveBeenCalled();
+      });
+
+      it('does not add any event listener', function () {
+        expect(document.addEventListener).not.toHaveBeenCalled();
+      });
+
+      it("assigns Singular to parent window", function () {
+        expect(window.parent.Singular).toBe(Singular);
+      });
+
+      it("append Singular iframes", function () {
+        expect(document.body.appendChild).toHaveBeenCalledWith(Singular.opFrame);
+        expect(document.body.appendChild).toHaveBeenCalledWith(Singular.rpFrame);
+      });
     });
   });
 });
