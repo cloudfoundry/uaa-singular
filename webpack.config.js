@@ -18,6 +18,7 @@ const htmlFileReader = {
 
 module.exports = [
   {
+    mode: 'production',
     module: htmlFileReader,
     entry: ['idempotent-babel-polyfill', './src/singular.js'],
     output: {
@@ -29,6 +30,7 @@ module.exports = [
     }
   },
   {
+    mode: 'production',
     module: htmlFileReader,
     entry: ['idempotent-babel-polyfill', './src/singular.js'],
     output: {
@@ -40,6 +42,7 @@ module.exports = [
     }
   },
   {
+    mode: 'production',
     module: htmlFileReader,
     entry: ['idempotent-babel-polyfill', './src/rpFrame.js'],
     output: {
