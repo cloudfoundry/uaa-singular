@@ -11,7 +11,7 @@ function createIframe(name, src) {
     return iframe;
 }
 
-function afterDomContentLoaded(opIframe, rpIframe) {
+function appendFramesToBody(opIframe, rpIframe) {
   window.parent.Singular = Singular;
 
   document.body.appendChild(opIframe);
@@ -28,7 +28,7 @@ var Singular = {
     uaaLocation: '',
     storageKey: 'singularUserIdentityClaims',
     authTimeout: 20000,
-    domContentLoaded: false
+    appendFramesOnInit: false
   },
   rpFrameLoaded : false,
 
@@ -59,11 +59,11 @@ var Singular = {
       Singular.rpFrameLoaded = true;
     };
 
-    if (Singular.properties.domContentLoaded) {
-      afterDomContentLoaded(opIframe, rpIframe);
+    if (Singular.properties.appendFramesOnInit === true) {
+      appendFramesToBody(opIframe, rpIframe);
     } else {
       document.addEventListener('DOMContentLoaded', function () {
-        afterDomContentLoaded(opIframe, rpIframe);
+        appendFramesToBody(opIframe, rpIframe);
       });
     }
   },

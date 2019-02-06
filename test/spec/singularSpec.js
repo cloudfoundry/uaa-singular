@@ -43,10 +43,10 @@ describe("Singular", function () {
     });
 
     describe("when initializing singular", function () {
-      var domContentLoaded;
+      var appendFramesOnInit;
 
       beforeEach(function () {
-        document.addEventListener.and.callFake((_, cb) => domContentLoaded = cb);
+        document.addEventListener.and.callFake((_, cb) => appendFramesOnInit = cb);
         spyOn(document.body, 'appendChild').and.callThrough();
 
         Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular' });
@@ -57,7 +57,7 @@ describe("Singular", function () {
       });
 
       it('adds a dom content loaded event listener', function () {
-        expect(document.addEventListener).toHaveBeenCalledWith("DOMContentLoaded", domContentLoaded);
+        expect(document.addEventListener).toHaveBeenCalledWith("DOMContentLoaded", appendFramesOnInit);
       });
 
       it("does not assign Singular to parent window", function () {
@@ -70,7 +70,7 @@ describe("Singular", function () {
 
       describe("when dom content has loaded", function () {
         beforeEach(function () {
-          domContentLoaded();
+          appendFramesOnInit();
         });
 
         it("assigns Singular to parent window", function () {
@@ -84,11 +84,11 @@ describe("Singular", function () {
       });
     });
 
-    describe("when initializing singular and domContentLoaded is true", function () {
+    describe("when initializing singular and appendFramesOnInit is true", function () {
       beforeEach(function () {
         spyOn(document.body, 'appendChild').and.callThrough();
 
-        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', domContentLoaded: true });
+        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', appendFramesOnInit: true });
       });
 
       it("validates the uaaLocation", function() {
