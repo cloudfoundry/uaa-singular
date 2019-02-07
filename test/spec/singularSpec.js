@@ -42,14 +42,15 @@ describe("Singular", function () {
       expect(badinit).toThrow("The \"clientId\" field must be set and not empty");
     });
 
-    describe("when initializing singular", function () {
+    describe("when initializing singular and appendFramesOnInit is false", function () {
       var appendFramesOnInit;
 
       beforeEach(function () {
         document.addEventListener.and.callFake((_, cb) => appendFramesOnInit = cb);
         spyOn(document.body, 'appendChild').and.callThrough();
+        window.parent.Singular = undefined;
 
-        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular' });
+        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', appendFramesOnInit: false });
       });
 
       it("validates the uaaLocation", function() {
