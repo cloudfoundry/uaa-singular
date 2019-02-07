@@ -71,6 +71,7 @@ describe("Singular", function () {
 
       describe("when dom content has loaded", function () {
         beforeEach(function () {
+          window.parent.Singular = undefined;
           appendFramesOnInit();
         });
 
@@ -88,6 +89,7 @@ describe("Singular", function () {
     describe("when initializing singular and appendFramesOnInit is true", function () {
       beforeEach(function () {
         spyOn(document.body, 'appendChild').and.callThrough();
+        window.parent.Singular = undefined;
 
         Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', appendFramesOnInit: true });
       });
