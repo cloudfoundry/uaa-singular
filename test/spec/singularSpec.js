@@ -1,11 +1,15 @@
 var document = {
   getElementById: function() { return { src: "" }},
   createElement: function() { return { setAttribute: function() {} }},
-  addEventListener: function() {}
+  addEventListener: function() {},
+  body: {
+    appendChild: function() {}
+  }
 };
 var window = {
   atob: function() {},
-  location: { href: 'http://mytesturl' }
+  location: { href: 'http://mytesturl' },
+  parent: {}
 };
 
 describe("Singular", function () {
@@ -18,22 +22,16 @@ describe("Singular", function () {
   });
 
   describe("Singular.init", function() {
-    it("validates uaaLocation is set", function() {
+    beforeEach(function () {
+      spyOn(document, 'addEventListener');
+    });
 
+    it("validates uaaLocation is set", function() {
       var badinit = function() {
         Singular.init({clientId: "boo", singularLocation: './node_modules/uaa-singular/singular' });
       };
 
       expect(badinit).toThrow("The \"uaaLocation\" field must be set and not empty");
-    });
-
-    it("validates the uaaLocation is actually a UAA", function() {
-      var badinit = function() {
-        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular' });
-      };
-
-      badinit();
-      expect(Singular.getUaaValidator().isValidUAA).toHaveBeenCalled();
     });
 
     it("validates clientId is set", function() {
@@ -42,6 +40,76 @@ describe("Singular", function () {
       };
 
       expect(badinit).toThrow("The \"clientId\" field must be set and not empty");
+    });
+
+    describe("when initializing singular and appendFramesOnInit is false", function () {
+      var appendFramesOnInit;
+
+      beforeEach(function () {
+        document.addEventListener.and.callFake((_, cb) => appendFramesOnInit = cb);
+        spyOn(document.body, 'appendChild').and.callThrough();
+        window.parent.Singular = undefined;
+
+        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', appendFramesOnInit: false });
+      });
+
+      it("validates the uaaLocation", function() {
+        expect(Singular.getUaaValidator().isValidUAA).toHaveBeenCalled();
+      });
+
+      it('adds a dom content loaded event listener', function () {
+        expect(document.addEventListener).toHaveBeenCalledWith("DOMContentLoaded", appendFramesOnInit);
+      });
+
+      it("does not assign Singular to parent window", function () {
+        expect(window.parent.Singular).toBeFalsy();
+      });
+
+      it("append Singular iframes", function () {
+        expect(document.body.appendChild).not.toHaveBeenCalled();
+      });
+
+      describe("when dom content has loaded", function () {
+        beforeEach(function () {
+          window.parent.Singular = undefined;
+          appendFramesOnInit();
+        });
+
+        it("assigns Singular to parent window", function () {
+          expect(window.parent.Singular).toBe(Singular);
+        });
+
+        it("append Singular iframes", function () {
+          expect(document.body.appendChild).toHaveBeenCalledWith(Singular.opFrame);
+          expect(document.body.appendChild).toHaveBeenCalledWith(Singular.rpFrame);
+        });
+      });
+    });
+
+    describe("when initializing singular and appendFramesOnInit is true", function () {
+      beforeEach(function () {
+        spyOn(document.body, 'appendChild').and.callThrough();
+        window.parent.Singular = undefined;
+
+        Singular.init({clientId: "boo", uaaLocation: "not-a-uaa-url", singularLocation: './node_modules/uaa-singular/singular', appendFramesOnInit: true });
+      });
+
+      it("validates the uaaLocation", function() {
+        expect(Singular.getUaaValidator().isValidUAA).toHaveBeenCalled();
+      });
+
+      it('does not add any event listener', function () {
+        expect(document.addEventListener).not.toHaveBeenCalled();
+      });
+
+      it("assigns Singular to parent window", function () {
+        expect(window.parent.Singular).toBe(Singular);
+      });
+
+      it("append Singular iframes", function () {
+        expect(document.body.appendChild).toHaveBeenCalledWith(Singular.opFrame);
+        expect(document.body.appendChild).toHaveBeenCalledWith(Singular.rpFrame);
+      });
     });
   });
 });

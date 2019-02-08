@@ -11,6 +11,13 @@ function createIframe(name, src) {
     return iframe;
 }
 
+function appendFramesToBody(opIframe, rpIframe) {
+  window.parent.Singular = Singular;
+
+  document.body.appendChild(opIframe);
+  document.body.appendChild(rpIframe);
+}
+
 var Singular = {
   properties: {
     singularLocation: '',
@@ -20,7 +27,8 @@ var Singular = {
     checkInterval: 1000,
     uaaLocation: '',
     storageKey: 'singularUserIdentityClaims',
-    authTimeout: 20000
+    authTimeout: 20000,
+    appendFramesOnInit: false
   },
   rpFrameLoaded : false,
 
@@ -51,12 +59,13 @@ var Singular = {
       Singular.rpFrameLoaded = true;
     };
 
-    document.addEventListener('DOMContentLoaded', function () {
-      window.parent.Singular = Singular;
-
-      document.body.appendChild(opIframe);
-      document.body.appendChild(rpIframe);
-    });
+    if (Singular.properties.appendFramesOnInit === true) {
+      appendFramesToBody(opIframe, rpIframe);
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        appendFramesToBody(opIframe, rpIframe);
+      });
+    }
   },
 
   validateProperties: function(params) {
