@@ -94,15 +94,7 @@ Define all custom behavior for the application in `onIdentityChange`. The argume
 | `appendFramesOnInit` |                                                     when `true`, Singular frames will be appended to the body on Init, instead of waiting for the DOMContentLoaded browser event                                                   | `false`                        |
 
 ## Example
-Included in this repository is an `/example` directory which showcases a minimal use of Singular. Before running the example, you must alter the `index.html` file. Inside of the call to `Singular.init`, you must provide the location of a running UAA and the `client_id` of an OAuth client on that server. The OAuth client must [meet these requirements](#server-side-prerequisites). Once you have made these configurations, run:
- 
- ```
- cd example
- npm install
- npm run start-uaa-singular-app
- ```
-
-Once started, the application will display the username of the currently logged-in user. If no user is logged in, it will present a link to the login page. Logging into and out of the UAA in another tab or window should update the page appropriately. 
+Included in [uaa-singular-example](https://github.com/cloudfoundry/uaa-singular-example) is an app that showcases a minimal use of Singular.
 
 ## Running the tests
 
