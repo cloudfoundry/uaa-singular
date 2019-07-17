@@ -10,23 +10,18 @@
   ],
   "main": "singular/singular.umd.js",
   "dependencies": {
-    "idempotent-babel-polyfill": "~0.1.0",
-    "jwt-simple": "^0.5.6",
-    "webpack-cli": "~3.3.0"
-  },
-  "resolutions": {
-    "eslint-scope": "3.7.1"
+    "idempotent-babel-polyfill": "~7.4.4",
+    "jwt-simple": "^0.5.6"
   },
   "devDependencies": {
-    "chromedriver": "^74.0.0",
-    "file-loader": "^1.1.11",
+    "chromedriver": "^75.1.0",
+    "file-loader": "^4.0.0",
     "http-server": "^0.11.1",
-    "jasmine": "^3.3.1",
-    "jasmine-core": "^3.3.0",
-    "nightwatch": "^1.0.18",
-    "selenium-server-standalone-jar": "3.14.0",
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.1"
+    "jasmine": "^3.4.0",
+    "jasmine-core": "^3.4.0",
+    "nightwatch": "^1.1.13",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6"
   },
   "scripts": {
     "build": "rm -rf singular && webpack",
