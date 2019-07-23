@@ -2,21 +2,14 @@
   "src_folders" : ["tests"],
   "output_folder" : "tmp/reports",
 
-  "selenium" : {
-    "start_process" : true,
-    "server_path" : "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.14.0.jar",
-    "log_path" : "",
-    "port": 4444,
-    "cli_args" : {
-      "webdriver.chrome.driver" : "../node_modules/chromedriver/bin/chromedriver"
-    }
+  "webdriver" : {
+    "start_process": true,
+    "server_path": "../node_modules/.bin/chromedriver",
+    "port": 9515
   },
 
   "test_settings" : {
     "default" : {
-      "launch_url" : "http://localhost:8000/example.html",
-      "selenium_port"  : 4444,
-      "selenium_host"  : "localhost",
       "silent": true,
       "screenshots" : {
         "enabled" : true,
@@ -26,7 +19,7 @@
         "browserName": "chrome",
         "javascriptEnabled" : true,
         "chromeOptions" : {
-          "args" : ["--headless", "-no-sandbox"]
+          "args" : ["--headless", "--no-sandbox"]
         }
       }
     }
