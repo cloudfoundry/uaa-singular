@@ -11,22 +11,21 @@
   "main": "singular/singular.umd.js",
   "dependencies": {
     "idempotent-babel-polyfill": "~0.1.0",
-    "jwt-simple": "^0.5.6",
-    "webpack-cli": "~3.3.7"
+    "jwt-simple": "^0.5.6"
   },
   "resolutions": {
     "eslint-scope": "3.7.1"
   },
   "devDependencies": {
     "chromedriver": "^78.0.1",
-    "file-loader": "^4.1.0",
+    "file-loader": "^4.2.0",
     "http-server": "^0.11.1",
     "jasmine": "^3.5.0",
-    "jasmine-core": "^3.3.0",
-    "nightwatch": "^1.2.1",
-    "selenium-server-standalone-jar": "3.14.0",
+    "jasmine-core": "^3.5.0",
+    "nightwatch": "^1.2.4",
+    "selenium-server-standalone-jar": "3.141.59",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.7"
+    "webpack-cli": "^3.3.9"
   },
   "scripts": {
     "build": "rm -rf singular && webpack",
