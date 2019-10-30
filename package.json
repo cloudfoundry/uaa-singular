@@ -10,7 +10,7 @@
   ],
   "main": "singular/singular.umd.js",
   "dependencies": {
-    "idempotent-babel-polyfill": "~0.1.0",
+    "idempotent-babel-polyfill": "~7.4.4",
     "jwt-simple": "^0.5.6"
   },
   "resolutions": {
