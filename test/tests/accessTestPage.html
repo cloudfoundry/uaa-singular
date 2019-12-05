@@ -6,7 +6,7 @@
   <script type="application/javascript">
     var info = {};
     Singular.init({
-      uaaLocation: "http://localhost:8080/uaa",
+      uaaLocation: "http://localhost:8080",
       clientId: 'singular-test-client',
       onIdentityChange: function (identity) {
       },
@@ -19,7 +19,7 @@
     });
 
     function loginWindow() {
-      window.open("http://localhost:8080/uaa", "LOGIN_WINDOW");
+      window.open("http://localhost:8080", "LOGIN_WINDOW");
     }
   </script>
 </head>

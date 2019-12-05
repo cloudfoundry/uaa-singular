@@ -9,7 +9,7 @@ START_TIME_IN_SEC=$(date +%s)
 UAA_START_TIMEOUT_SEC=600
 
 while [ $(($(date +%s) - ${START_TIME_IN_SEC})) -lt ${UAA_START_TIMEOUT_SEC} ]; do
-  resp=$(set +e; curl -sf "http://localhost:8080/uaa"; echo $?);
+  resp=$(set +e; curl -sf "http://localhost:8080"; echo $?);
   if [ "${resp}" = "0" ]; then
     echo "UAA is now running";
     break;
@@ -17,7 +17,7 @@ while [ $(($(date +%s) - ${START_TIME_IN_SEC})) -lt ${UAA_START_TIMEOUT_SEC} ]; 
   sleep 5;
 done
 
-ACCESS_TOKEN=$(curl http://localhost:8080/uaa/oauth/token -X POST  \
+ACCESS_TOKEN=$(curl http://localhost:8080/oauth/token -X POST  \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'Accept: application/json' \
     -d 'client_id=admin&client_secret=adminsecret&grant_type=client_credentials&token_format=opaque&response_type=token' \
@@ -25,7 +25,7 @@ ACCESS_TOKEN=$(curl http://localhost:8080/uaa/oauth/token -X POST  \
     | tr -d '"')
 
 echo "Creating the test client singular-test-client"
-curl http://localhost:8080/uaa/oauth/clients -X POST \
+curl http://localhost:8080/oauth/clients -X POST \
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${ACCESS_TOKEN}" \
     -H 'Accept: application/json' \
