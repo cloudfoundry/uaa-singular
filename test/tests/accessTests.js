@@ -1,6 +1,6 @@
 const jwt = require('jwt-simple');
 
-const loginUrl = 'http://localhost:8080/login';
+const loginUrl = 'http://localhost:8080/uaa/login';
 const testAppUrl = 'http://localhost:8000/test/tests/accessTestPage.html';
 
 module.exports = {
