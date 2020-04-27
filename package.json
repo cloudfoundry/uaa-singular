@@ -17,7 +17,7 @@
     "eslint-scope": "3.7.1"
   },
   "devDependencies": {
-    "chromedriver": "^80.0.1",
+    "chromedriver": "^81.0.0",
     "file-loader": "^6.0.0",
     "http-server": "^0.12.2",
     "jasmine": "^3.5.0",
