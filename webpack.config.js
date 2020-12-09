@@ -22,6 +22,7 @@ module.exports = [
     module: htmlFileReader,
     entry: ['idempotent-babel-polyfill', './src/singular.js'],
     output: {
+      publicPath: '',
       filename: 'singular.js',
       path: path.resolve(__dirname, 'singular'),
       library: 'Singular',
@@ -34,6 +35,7 @@ module.exports = [
     module: htmlFileReader,
     entry: ['idempotent-babel-polyfill', './src/singular.js'],
     output: {
+      publicPath: '',
       filename: 'singular.umd.js',
       path: path.resolve(__dirname, 'singular'),
       library: 'Singular',
@@ -46,6 +48,7 @@ module.exports = [
     module: htmlFileReader,
     entry: ['idempotent-babel-polyfill', './src/rpFrame.js'],
     output: {
+      publicPath: '',
       filename: 'rpFrame.js',
       path: path.resolve(__dirname, 'singular'),
       library: 'RPFrame',
