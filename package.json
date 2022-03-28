@@ -21,7 +21,7 @@
     "file-loader": "^6.2.0",
     "http-server": "^14.1.0",
     "jasmine": "^4.0.2",
-    "jasmine-core": "^4.0.0",
+    "jasmine-core": "^4.0.1",
     "nightwatch": "^2.0.10",
     "selenium-server-standalone-jar": "3.141.59",
     "webpack": "^5.69.1",
