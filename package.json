@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "file-loader": "^6.2.0",
-    "http-server": "^14.1.0",
+    "http-server": "^14.1.1",
     "jasmine": "^4.2.1",
     "jasmine-core": "^4.0.1",
     "nightwatch": "^1.7.13",
