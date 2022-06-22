@@ -1,0 +1,14 @@
+name: unit-test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm install
+    - name: Build
+      run: npm run build
+    - name: Unit test
+      run: npm run unit-test
