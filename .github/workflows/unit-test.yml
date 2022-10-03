@@ -12,3 +12,5 @@ jobs:
       run: npm run build
     - name: Unit test
       run: npm run unit-test
+    - name: Integration test
+      run: npm run start-uaa && npm run start-singular-app && npm run test
