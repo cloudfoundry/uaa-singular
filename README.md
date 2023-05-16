@@ -93,9 +93,6 @@ Define all custom behavior for the application in `onIdentityChange`. The argume
 |        `authTimeout` |                                                         milliseconds to wait for an identity token to be retrieved before treating it as an error and logging the user out                                                         | `20000`                        |
 | `appendFramesOnInit` |                                                     when `true`, Singular frames will be appended to the body on Init, instead of waiting for the DOMContentLoaded browser event                                                   | `false`                        |
 
-## Example
-Included in [uaa-singular-example](https://github.com/cloudfoundry/uaa-singular-example) is an app that showcases a minimal use of Singular.
-
 ## Running the tests
 
 ```
