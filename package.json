@@ -10,7 +10,7 @@
   ],
   "main": "singular/singular.umd.js",
   "dependencies": {
-    "chromedriver": "^114.0.3",
+    "chromedriver": "^115.0.0",
     "idempotent-babel-polyfill": "~7.4.4",
     "jwt-simple": "^0.5.6"
   },
