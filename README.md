@@ -1,6 +1,6 @@
 # UAA Singular Login for Web Applications
 
-Singular is a Javascript module that enables web applications to easily identify a user via their authenticated browser session at the [UAA](https://github.com/cloudfoundry/uaa) identity server. Singular has no external client-side dependencies, and the latest version of Singular will work with UAA 4.10.0 and later.
+Singular is a Javascript module that enables web applications to easily identify a user via their authenticated browser session at the [UAA](https://github.com/cloudfoundry/uaa) identity server. Singular has no external client-side dependencies, and the latest version of Singular will work with UAA v70 and later.
 
 ## License
 Singular is licensed under the Apache License, Version 2.0.
