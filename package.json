@@ -22,7 +22,7 @@
     "http-server": "^14.1.1",
     "jasmine": "^5.5.0",
     "jasmine-core": "^5.5.0",
-    "nightwatch": "^3.9.0",
+    "nightwatch": "^3.10.0",
     "selenium-server-standalone-jar": "4.26.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.0"
