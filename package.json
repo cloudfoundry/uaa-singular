@@ -24,7 +24,7 @@
     "jasmine-core": "^5.7.1",
     "nightwatch": "^3.16.0",
     "selenium-server-standalone-jar": "4.33.0",
-    "webpack": "^5.99.9",
+    "webpack": "^5.107.2",
     "webpack-cli": "^6.0.1"
   },
   "scripts": {
