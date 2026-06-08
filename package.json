@@ -20,7 +20,7 @@
   "devDependencies": {
     "file-loader": "^6.2.0",
     "http-server": "^14.1.1",
-    "jasmine": "^6.2.0",
+    "jasmine": "^6.3.0",
     "jasmine-core": "^6.3.0",
     "nightwatch": "^3.16.0",
     "selenium-server-standalone-jar": "4.40.0",
