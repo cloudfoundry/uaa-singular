@@ -25,7 +25,7 @@
     "nightwatch": "^3.16.0",
     "selenium-server-standalone-jar": "4.40.0",
     "webpack": "^5.108.3",
-    "webpack-cli": "^7.1.0"
+    "webpack-cli": "^7.2.1"
   },
   "scripts": {
     "build": "rm -rf singular && webpack",
