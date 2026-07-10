@@ -3,7 +3,7 @@
 set -ex
 
 cd test/tmp/uaa
-./gradlew cargoStartLocal 2>&1 > /dev/null
+./gradlew run 2>&1 > /dev/null &
 
 START_TIME_IN_SEC=$(date +%s)
 UAA_START_TIMEOUT_SEC=600

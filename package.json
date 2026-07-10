@@ -31,7 +31,7 @@
     "build": "rm -rf singular && webpack",
     "get-uaa": "rm -rf test/tmp/uaa && git clone -b develop https://github.com/cloudfoundry/uaa.git test/tmp/uaa",
     "start-uaa": "sh test/startUAA.sh",
-    "stop-uaa": "cd test/tmp/uaa && ./gradlew cargoStopLocal",
+    "stop-uaa": "cd test/tmp/uaa && ./scripts/kill_uaa.sh",
     "start-singular-app": "sh test/startHttpServer.sh",
     "stop-singular-app": "kill $(cat test/tmp/httpServer.pid.tmp) && rm test/tmp/httpServer.pid.tmp",
     "test": "npm run build && npm run unit-test && npm run integration-test",
