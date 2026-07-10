@@ -1,0 +1,99 @@
+name: pull-request-integration-tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  uaa-singular-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout uaa-singular
+        uses: actions/checkout@v4
+
+      - name: Checkout cloudfoundry/uaa (develop)
+        uses: actions/checkout@v4
+        with:
+          repository: cloudfoundry/uaa
+          ref: develop
+          path: uaa
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('uaa/**/*.gradle*', 'uaa/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Build UAA bootWar
+        working-directory: uaa
+        run: ./gradlew bootWar
+
+      - name: Start UAA
+        working-directory: uaa
+        run: |
+          nohup java \
+            -DCLOUDFOUNDRY_CONFIG_PATH=scripts/boot \
+            -DSECRETS_DIR=scripts/boot \
+            -Dserver.servlet.context-path=/uaa \
+            -Dsmtp.host=localhost \
+            -Dsmtp.port=2525 \
+            -Dspring.profiles.active=hsqldb \
+            -Djava.security.egd=file:/dev/./urandom \
+            -jar uaa/build/libs/cloudfoundry-identity-uaa-0.0.0.war > uaa-boot.log 2>&1 &
+
+          echo "Waiting for UAA to be ready..."
+          for i in $(seq 1 120); do
+            if curl -sf http://localhost:8080/uaa > /dev/null 2>&1; then
+              echo "UAA is now running"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "UAA failed to start within 600 seconds. Boot log:"
+          cat uaa-boot.log
+          exit 1
+
+      - name: Create singular-test-client
+        run: |
+          ACCESS_TOKEN=$(curl -sf http://localhost:8080/uaa/oauth/token -X POST \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            -H 'Accept: application/json' \
+            -d 'client_id=admin&client_secret=adminsecret&grant_type=client_credentials&token_format=opaque&response_type=token' \
+            | jq -r '.access_token')
+
+          curl -sf http://localhost:8080/uaa/oauth/clients -X POST \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H 'Accept: application/json' \
+            -d '{
+              "scope": ["cloud_controller.read", "cloud_controller.write", "openid"],
+              "client_id": "singular-test-client",
+              "resource_ids": [],
+              "authorized_grant_types": ["implicit"],
+              "redirect_uri": ["http://localhost:8000/**"],
+              "autoapprove": true,
+              "name": "Singular Test Client"
+            }'
+
+      - name: Install dependencies and matching chromedriver
+        run: |
+          npm install
+          CHROME_MAJOR=$(google-chrome --version | grep -oP '\d+' | head -1)
+          npm install "chromedriver@${CHROME_MAJOR}"
+
+      - name: Start singular app
+        run: npm run start-singular-app
+
+      - name: Run tests
+        run: npm test
