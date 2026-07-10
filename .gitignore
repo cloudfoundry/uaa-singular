@@ -6,4 +6,3 @@ node_modules
 test/*.log
 tmp/
 singular/
-CLAUDE.local.md
