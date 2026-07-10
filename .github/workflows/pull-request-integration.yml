@@ -1,8 +1,12 @@
 name: pull-request-integration-tests
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
-    branches: [main]
+    branches: [ "main" ]
+  schedule:
+    - cron: '30 7 * * *'
 
 permissions:
   contents: read
