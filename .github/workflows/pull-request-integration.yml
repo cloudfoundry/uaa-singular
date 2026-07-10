@@ -4,12 +4,17 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   uaa-singular-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout uaa-singular
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Checkout cloudfoundry/uaa (develop)
         uses: actions/checkout@v4
@@ -17,6 +22,7 @@ jobs:
           repository: cloudfoundry/uaa
           ref: develop
           path: uaa
+          persist-credentials: false
 
       - uses: actions/setup-java@v4
         with:
@@ -42,6 +48,7 @@ jobs:
       - name: Start UAA
         working-directory: uaa
         run: |
+          WAR_FILE=$(ls uaa/build/libs/*.war | head -1)
           nohup java \
             -DCLOUDFOUNDRY_CONFIG_PATH=scripts/boot \
             -DSECRETS_DIR=scripts/boot \
@@ -50,7 +57,7 @@ jobs:
             -Dsmtp.port=2525 \
             -Dspring.profiles.active=hsqldb \
             -Djava.security.egd=file:/dev/./urandom \
-            -jar uaa/build/libs/cloudfoundry-identity-uaa-0.0.0.war > uaa-boot.log 2>&1 &
+            -jar "${WAR_FILE}" > uaa-boot.log 2>&1 &
 
           echo "Waiting for UAA to be ready..."
           for i in $(seq 1 120); do
@@ -88,9 +95,9 @@ jobs:
 
       - name: Install dependencies and matching chromedriver
         run: |
-          npm install
+          npm ci
           CHROME_MAJOR=$(google-chrome --version | grep -oP '\d+' | head -1)
-          npm install "chromedriver@${CHROME_MAJOR}"
+          npm install "chromedriver@${CHROME_MAJOR}" --no-save
 
       - name: Start singular app
         run: npm run start-singular-app
