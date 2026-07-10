@@ -104,3 +104,5 @@ npm test
 
 `start-uaa` and `start-singular-app` spawn background processes.
 Be sure to run `npm run stop-uaa` and `npm run stop-singular-app` when finished.
+
+The `chromedriver` version in `package.json` must support your locally installed Chrome's major version, or the integration suite will fail immediately with `session not created: This version of ChromeDriver only supports Chrome version X`. If you hit this, update your local Chrome (or override the dependency locally without committing the change) — please don't commit a downgraded/pinned version to work around your own browser, since that would break the tests for everyone else.

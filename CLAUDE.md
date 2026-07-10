@@ -9,8 +9,8 @@
 - **Language:** Vanilla ES5/ES6 JavaScript (no TypeScript, no framework — plain `var`/`function` style, CommonJS `require`/`module.exports` mixed with ES `import`/`export default`)
 - **Bundler:** Webpack 5 (`webpack-cli`) — produces 3 separate bundles from `webpack.config.js`
 - **Polyfill:** `idempotent-babel-polyfill` (injected as a Webpack entry point, not via Babel transpilation config)
-- **Runtime dependency:** `jwt-simple` (declared dependency; JWT decoding is actually hand-rolled in `singular.js` via `atob`)
-- **Unit testing:** Jasmine 5 (`jasmine.json` config, specs in `test/spec/`)
+- **`jwt-simple`:** declared as a production dependency in `package.json`, but `src/` never imports it — the library hand-rolls JWT decoding in `singular.js` via `atob`. Its only actual consumer is the Nightwatch test helper `test/tests/accessTests.js`, which `require`s it directly to decode tokens for assertions.
+- **Unit testing:** Jasmine 6 (`jasmine.json` config, specs in `test/spec/`)
 - **Integration/E2E testing:** Nightwatch 3 + ChromeDriver + Selenium standalone server, driving a real UAA instance and a real Chrome browser headlessly
 - **Local static server:** `http-server` (serves the built `singular/` bundle for integration tests)
 - **CI:** GitHub Actions (`unit-test.yml` — build + unit test on every push) and CodeQL (`codeql-analysis.yml`)
@@ -51,11 +51,11 @@ uaa-singular/
 
 ## Key Architecture & Data Flow
 
-Singular runs entirely in the browser across **three cooperating iframes/windows**, coordinated by `window.postMessage` and silent OAuth2 implicit-grant redirects:
+Singular runs entirely in the browser across **several cooperating iframes/windows**, coordinated by `window.postMessage` and silent OAuth2 implicit-grant redirects:
 
 1. **Host page → `Singular.init(params)`** (`singular.js`): validates required config (`uaaLocation`, `clientId`) via `uaaValidator.js`, then creates two hidden iframes and appends them to `document.body`:
    - **OP iframe** → UAA's `/session_management` endpoint (server-managed OIDC session-check page)
-   - **RP iframe** → this library's `client_frame.html`, which boots `rpFrame.js`
+   - **RP iframe** → this library's `client_frame.html`, which boots `rpFrame.js` and itself contains a nested, initially-blank `authorizeFrame` iframe used for silent redirects (step 3)
 2. **RP iframe polls for session changes** (`rpFrame.startCheckingSession`): every `checkInterval` ms, it `postMessage`s the client ID + last known `session_state` to the OP iframe.
 3. **OP iframe replies** with `changed` / `unchanged` / error via `postMessage`, handled by `rpFrame.receiveMessage`:
    - `changed` → clears cached identity, silently redirects a nested `authorizeFrame` to UAA's `/oauth/authorize` (implicit grant, `response_type=id_token`, `prompt=none`) targeting **`postauth.html`**.
@@ -105,3 +105,6 @@ CI (`unit-test.yml`) only runs `npm run build` + `npm run unit-test` on every pu
 - **State lives in `localStorage`, keyed by `storageKey`.** Identity claims and session state are cached under `${storageKey}-claims` / `${storageKey}-session_state`; treat these as the only persistence layer — there is no cookie or server session to fall back on.
 - **Code style is intentionally old-school ES5/ES6-mixed** (`var`, `function` expressions, CommonJS `require` alongside ES `import`/`export default`) to keep the bundle small and broadly browser-compatible (see README's IE11+ support matrix) — don't introduce modern syntax (`class`, `async/await`, arrow functions in the library bundle) without checking the target browser matrix in the README.
 - **Unit specs mirror `src/` 1:1** (`test/spec/rpFrameSpec.js`, `singularSpec.js`, `versionUtilSpec.js`); integration tests live separately under `test/tests/` and require a live UAA + built bundle — keep new logic testable at the unit level rather than pushing everything into Nightwatch.
+- **`chromedriver`'s pinned version in `package.json` must support your locally installed Chrome's major version**, or `npm run integration-test` fails immediately for every test with `session not created: This version of ChromeDriver only supports Chrome version X`. Never "fix" this by committing a downgraded/pinned version to work around one contributor's browser — `chromedriver` is a shared dependency for every contributor and CI; pin changes belong in a real dependency-bump PR, not as a side effect of a local test run. Update your local Chrome instead, or override the version locally without committing.
+- **UAA's local test harness no longer uses the Gradle Cargo plugin.** `test/startUAA.sh` boots it with `./gradlew run &` (UAA's own task, which kills any stale UAA process before running `bootRun`) and `stop-uaa` kills it via UAA's `scripts/kill_uaa.sh`. `bootRun` blocks in the foreground (unlike the old Cargo deploy task), so it must stay backgrounded — dropping the trailing `&` makes `start-uaa` hang forever before it ever reaches the readiness poll.
+- **`test/tests/accessTests.js` can be flaky when run in the same Nightwatch invocation as `identityTests.js`** — a timing-sensitive OAuth silent-redirect can occasionally resolve with a null token/error, failing `jwt.decode` with `No token supplied`. Before treating this as a regression, re-run it in isolation: `cd test && ../node_modules/nightwatch/bin/nightwatch --test tests/accessTests.js`.
