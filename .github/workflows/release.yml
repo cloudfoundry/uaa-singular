@@ -14,6 +14,10 @@ on:
           - minor
           - patch
 
+concurrency:
+  group: ship-release
+  cancel-in-progress: false
+
 jobs:
   release:
     name: Publish to npm and create GitHub Release
@@ -40,19 +44,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Bump version, tag, and push
+      - name: Bump version and tag
         id: bump
         run: |
           NEW_VERSION=$(npm version "${{ github.event.inputs.release_type }}")
           echo "version=${NEW_VERSION}" >> "$GITHUB_OUTPUT"
-          git push origin main
-          git push origin "${NEW_VERSION}"
 
       - name: Publish to npm
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Push version bump commit and tag
+        run: |
+          git push --atomic origin HEAD:main "${{ steps.bump.outputs.version }}"
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
