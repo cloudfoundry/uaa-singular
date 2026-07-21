@@ -1,4 +1,4 @@
-name: pull-request-integration-tests
+name: integration-test
 
 on:
   push:
