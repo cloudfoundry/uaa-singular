@@ -17,6 +17,9 @@
   "resolutions": {
     "eslint-scope": "3.7.1"
   },
+  "overrides": {
+    "js-yaml": "^4.3.0"
+  },
   "devDependencies": {
     "file-loader": "^6.2.0",
     "http-server": "^14.1.1",
