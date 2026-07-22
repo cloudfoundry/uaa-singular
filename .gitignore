@@ -4,5 +4,7 @@
 node_modules
 !/.gitignore
 test/*.log
+test/logs/
+test/tmp/
 tmp/
 singular/
