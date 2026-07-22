@@ -19,7 +19,8 @@
   },
   "overrides": {
     "js-yaml": "^4.3.0",
-    "adm-zip": "^0.6.0"
+    "adm-zip": "^0.6.0",
+    "piscina": "^4.9.3"
   },
   "devDependencies": {
     "file-loader": "^6.2.0",
