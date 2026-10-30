@@ -28,8 +28,8 @@
     "jasmine": "^7.0.0",
     "jasmine-core": "^7.0.2",
     "nightwatch": "^3.16.0",
-    "selenium-server-standalone-jar": "4.48.0",
-    "webpack": "^5.112.0",
+    "selenium-server-standalone-jar": "4.51.0",
+    "webpack": "^5.112.1",
     "webpack-cli": "^7.2.3"
   },
   "scripts": {
