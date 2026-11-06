@@ -12,7 +12,7 @@
   "dependencies": {
     "chromedriver": "^155.0.2",
     "idempotent-babel-polyfill": "~7.4.4",
-    "jwt-simple": "^0.5.6"
+    "jwt-simple": "^0.6.1"
   },
   "resolutions": {
     "eslint-scope": "3.7.1"
@@ -28,8 +28,8 @@
     "jasmine": "^7.0.0",
     "jasmine-core": "^7.0.2",
     "nightwatch": "^3.16.0",
-    "selenium-server-standalone-jar": "4.48.0",
-    "webpack": "^5.112.0",
+    "selenium-server-standalone-jar": "4.51.0",
+    "webpack": "^5.112.2",
     "webpack-cli": "^7.2.3"
   },
   "scripts": {
